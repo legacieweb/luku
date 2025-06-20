@@ -418,12 +418,24 @@ function initializeSwiper() {
     slidesPerView: 3,
     freeMode: true,
     watchSlidesProgress: true,
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true,
+    },
   });
+
   new Swiper(".mySwiper2", {
     spaceBetween: 10,
-    thumbs: { swiper: thumbs },
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true,
+    },
+    thumbs: {
+      swiper: thumbs,
+    },
   });
 }
+
 
 renderProduct();
 updateCartUI();
