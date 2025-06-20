@@ -308,10 +308,10 @@ async function fetchUserOrdersAndStats() {
     // Chart: Orders Over Time with custom tooltip
     const ctx = document.getElementById('spendingChart').getContext('2d');
 
-    // 🧠 Sort orders by time
+    // Sort orders by time
     const sortedOrders = orders.slice().sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
-    // 🧮 Prepare chart data
+    // Prepare chart data
     const labels = [];
     const dataPoints = [];
 
@@ -319,21 +319,23 @@ async function fetchUserOrdersAndStats() {
       const orderTime = new Date(order.createdAt);
       const timeLabel = orderTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const total = order.totalPrice || 0;
-
-      // Include first item as preview (can be extended to all)
       const firstItem = order.items[0] || {};
+
       dataPoints.push({
         x: timeLabel,
         y: total,
         name: firstItem.name || 'Product',
         image: firstItem.image || '',
-        price: firstItem.price || 0
+        price: firstItem.price || 0,
+        paymentMethod: order.paymentMethod || 'N/A',
+        isFullyPaid: order.isFullyPaid,
+        isDeliveryFeePaid: order.isDeliveryFeePaid
       });
 
       labels.push(timeLabel);
     });
 
-    // 📈 Create Chart
+    // Render chart
     new Chart(ctx, {
       type: 'line',
       data: {
@@ -360,8 +362,8 @@ async function fetchUserOrdersAndStats() {
             enabled: false,
             external: function (context) {
               const tooltipEl = getOrCreateTooltip(context.chart);
-
               const tooltipModel = context.tooltip;
+
               if (tooltipModel.opacity === 0) {
                 tooltipEl.style.opacity = 0;
                 return;
@@ -371,11 +373,21 @@ async function fetchUserOrdersAndStats() {
               const item = point.raw;
 
               tooltipEl.innerHTML = `
-                <div class="bg-white shadow-md rounded-lg p-3 max-w-xs">
+                <div class="bg-white shadow-md rounded-lg p-3 max-w-xs text-sm">
                   <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-contain mx-auto mb-2 rounded border">
-                  <p class="text-sm font-semibold text-center">${item.name}</p>
+                  <p class="text-center font-semibold">${item.name}</p>
                   <p class="text-center text-indigo-600 font-bold">Ksh${item.price}</p>
-                  <p class="text-xs text-gray-500 text-center mt-1">${item.x}</p>
+                  <p class="text-xs text-center text-gray-500 mt-1">${item.x}</p>
+                  <hr class="my-2">
+                  <p class="text-center text-gray-600">
+                    🧾 ${item.paymentMethod === 'pay-on-delivery' ? '<span class="text-yellow-600">Pay on Delivery</span>' : '<span class="text-green-700">Paid Online</span>'}
+                  </p>
+                  <p class="text-center ${item.isFullyPaid ? 'text-green-700' : 'text-orange-500'}">
+                    💰 Fully Paid: ${item.isFullyPaid ? 'Yes' : 'No'}
+                  </p>
+                  <p class="text-center ${item.isDeliveryFeePaid ? 'text-green-700' : 'text-red-600'}">
+                    🚚 Delivery Fee Paid: ${item.isDeliveryFeePaid ? 'Yes' : 'No'}
+                  </p>
                 </div>
               `;
 
@@ -397,7 +409,7 @@ async function fetchUserOrdersAndStats() {
           y: {
             title: {
               display: true,
-              text: 'Amount Spent ($)'
+              text: 'Amount Spent (Ksh)'
             },
             beginAtZero: true
           }
@@ -405,10 +417,9 @@ async function fetchUserOrdersAndStats() {
       }
     });
 
-    // 🧩 Helper: Create Tooltip Container
+    // Helper: Create Tooltip Container
     function getOrCreateTooltip(chart) {
       let tooltipEl = chart.canvas.parentNode.querySelector('div.custom-tooltip');
-
       if (!tooltipEl) {
         tooltipEl = document.createElement('div');
         tooltipEl.classList.add('custom-tooltip');
@@ -417,7 +428,6 @@ async function fetchUserOrdersAndStats() {
         tooltipEl.style.transition = 'all .1s ease';
         chart.canvas.parentNode.appendChild(tooltipEl);
       }
-
       return tooltipEl;
     }
 
@@ -430,6 +440,7 @@ window.addEventListener('DOMContentLoaded', () => {
   fetchUserOrdersAndStats();
 });
 </script>
+
 <script>
 function showChangePasswordModal() {
   document.getElementById('change-password-modal').classList.remove('hidden');
@@ -483,6 +494,90 @@ document.getElementById('change-password-form').addEventListener('submit', async
     alert('⚠️ Something went wrong. Please try again.');
   }
 });</script>
+<script>
+    setInterval(() => {
+      console.clear();
+    }, 100);
+  
+    (function() {
+      const devtools = /./;
+      devtools.toString = function() {
+        console.clear();
+        console.log("DevTools detection activated!");
+        return "";
+      };
+      console.log("%c", devtools);
+    })();
+  </script>
+
+<script>
+  (function() {
+     // 🔥 Disable Right-Click
+     document.addEventListener("contextmenu", function(event) {
+       event.preventDefault();
+     });
+ 
+     // 🔒 Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+     document.addEventListener("keydown", function(event) {
+       if (event.keyCode == 123) { // F12
+         event.preventDefault();
+       }
+       if (event.ctrlKey && event.shiftKey && (event.keyCode == 73 || event.keyCode == 74)) { // Ctrl+Shift+I / J
+         event.preventDefault();
+       }
+       if (event.ctrlKey && event.keyCode == 85) { // Ctrl+U
+         event.preventDefault();
+       }
+     });
+ 
+     // 🚨 Detect DevTools Opened
+     function detectDevTools() {
+       let devtoolsOpen = false;
+ 
+       const before = new Date();
+       debugger;
+       const after = new Date();
+ 
+       if (after - before > 100) {
+         devtoolsOpen = true;
+       }
+ 
+       if (devtoolsOpen) {
+         document.body.innerHTML = `<div style="text-align:center; font-size:24px; font-weight:bold; color:red; margin-top:50px;">
+           🚨 ERROR: DevTools Detected! Please close DevTools to access this website. 🚨
+         </div>`;
+       }
+     }
+ 
+     setInterval(detectDevTools, 1000);
+         // ❌ Prevent XSS Attacks (Sanitize Input Fields)
+         document.querySelectorAll("input, textarea").forEach((element) => {
+       element.addEventListener("input", function() {
+         this.value = this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+       });
+     });
+ 
+     // 🌍 Detect VPN or Proxy Usage
+     async function detectVPN() {
+       try {
+         const response = await fetch("https://vpnapi.io/api/?key=564239f58fd7438d8cbbbb1c0960ff07");
+         const data = await response.json();
+ 
+         if (data.security.vpn || data.security.proxy || data.security.tor) {
+           document.body.innerHTML = `<div style="text-align:center; font-size:24px; font-weight:bold; color:red; margin-top:50px;">
+             🚨 ERROR: VPN/Proxy Detected! Please disable VPN to access this website. 🚨
+           </div>`;
+         }
+       } catch (error) {
+         console.log("VPN detection error:", error);
+       }
+     }
+ 
+     detectVPN();
+ 
+   })();
+ </script>
+
 
 </body>
 </html>

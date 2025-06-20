@@ -495,7 +495,7 @@ app.get('/api/user/orders', authMiddleware, async (req, res) => {
 });
 
 
-// ✅ ADMIN: Update order status
+// ✅ ADMIN: Update order status and full payment flag
 app.patch('/api/admin/orders/:id/status', adminAuth, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -508,19 +508,31 @@ app.patch('/api/admin/orders/:id/status', adminAuth, async (req, res) => {
       'Shipped', 'Delivered', 'Cancelled'
     ];
 
-    if (!allowedStatuses.includes(req.body.status)) {
+    const newStatus = req.body.status;
+    if (!allowedStatuses.includes(newStatus)) {
       return res.status(400).json({ message: 'Invalid status value' });
     }
 
-    order.status = req.body.status;
+    order.status = newStatus;
+
+    // ✅ If delivered and not yet fully paid, mark as paid
+    if (newStatus === 'Delivered' && !order.isFullyPaid) {
+      order.isFullyPaid = true;
+    }
+
     await order.save();
 
-    res.json({ message: 'Status updated', status: order.status });
+    res.json({
+      message: 'Status updated',
+      status: order.status,
+      isFullyPaid: order.isFullyPaid
+    });
   } catch (err) {
     console.error('Update error:', err);
     res.status(500).json({ message: 'Failed to update order status' });
   }
 });
+
 
 app.post('/api/auth/change-password', authMiddleware, async (req, res) => {
   const { currentPassword, newPassword } = req.body;
