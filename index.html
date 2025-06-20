@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>lukumisteress | Affordable Shoes for All Genders in Kenya</title>
+  <meta name="description" content="lukumisteress is Kenya's affordable online shoe store for all genders. Shop quality sneakers, heels, sandals, boots, and more at unbeatable prices.">
+  <meta name="keywords" content="lukumisteress, shoes, Kenya, affordable, sneakers, heels, sandals, boots, wedges, slippers, rubbers, slides, all gender, online store">
+  <meta name="author" content="lukumisteress">
+  <meta property="og:title" content="lukumisteress | Affordable Shoes for All Genders in Kenya">
+  <meta property="og:description" content="Shop affordable and stylish shoes for everyone in Kenya. Sneakers, heels, sandals, boots, and more.">
+  <meta property="og:url" content="https://lukumisteress.iyonicorp.com">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://i.imgur.com/NvQLami.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="lukumisteress | Affordable Shoes for All Genders in Kenya">
+  <meta name="twitter:description" content="Kenya's best online shoe store for affordable, quality footwear for all genders.">
+  <meta name="twitter:image" content="https://i.imgur.com/NvQLami.png">
+  <link rel="canonical" href="https://lukumisteress.iyonicorp.com/" />
+  <link rel="icon" href="https://i.imgur.com/NvQLami.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+<style>
+  @keyframes fade-in {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes slide-in-right {
+    0% { opacity: 0; transform: translateX(10px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+  }
+
+  .animate-slide-in {
+    animation: slide-in-right 0.5s ease-out forwards;
+  }
+
+  @keyframes dropdown-fade {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .dropdown-animate {
+    animation: dropdown-fade 0.3s ease-out forwards;
+  }
+</style>
+
+<!-- Header -->
+<header class="flex justify-between items-center px-6 md:px-10 py-4 bg-transparent shadow-md sticky top-0 z-50">
+  <!-- Logo Section -->
+  <a href="https://lukumisteress.iyonicorp.com" class="flex items-center space-x-3">
+    <img src="https://i.imgur.com/NvQLami.png" alt="luku misteress Logo" class="w-14 h-14 md:w-20 md:h-20 object-contain" />
+  </a>
+
+  <!-- Navigation Buttons -->
+  <nav class="flex items-center space-x-4 md:space-x-6">
+    <!-- Cart Icon -->
+    <button id="cart-icon" class="relative text-xl hover:scale-110 transition">
+      🛒
+      <span id="cart-count" class="absolute -top-2 -right-3 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+    </button>
+
+    <!-- User Menu Icon -->
+    <button onclick="toggleUserMenu()" id="userMenuBtn" class="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-gray-100 text-2xl transition">
+      👤
+    </button>
+  </nav>
+
+  <!-- Cart Dropdown -->
+  <div id="cart-dropdown" class="absolute right-6 top-20 w-80 bg-white border rounded shadow-lg hidden z-50">
+    <div class="flex justify-between items-center p-4 border-b">
+      <h3 class="text-lg font-semibold">Cart Items</h3>
+      <button onclick="closeCartDropdown()" class="text-gray-500 hover:text-red-600 text-xl font-bold">×</button>
+    </div>
+    <div class="p-4">
+      <div id="cart-items" class="space-y-3 max-h-52 overflow-y-auto"></div>
+      <button onclick="proceedToCheckout()" class="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">Checkout</button>
+    </div>
+  </div>
+
+  <!-- User Menu Dropdown -->
+  <div id="userMenu" class="absolute right-6 top-20 w-48 bg-white border rounded shadow-md hidden z-50 dropdown-animate"></div>
+</header>
+<!-- Signup Prompt Modal -->
+<div id="signupPrompt" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-[350px] text-center">
+    <h3 class="text-xl font-semibold mb-4">Please Sign Up or Log In</h3>
+    <p class="mb-4 text-gray-600">You need to be logged in to add products or place orders.</p>
+    <a href="./signup" class="inline-block bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition">Go to Sign Up</a>
+    <button onclick="hideSignupPrompt()" class="block text-sm text-gray-500 mt-4 hover:underline">Cancel</button>
+  </div>
+</div>
+<script>
+  function toggleUserMenu() {
+    const menu = document.getElementById("userMenu");
+    if (menu.classList.contains("hidden")) {
+      menu.classList.remove("hidden");
+      renderUserMenu();
+    } else {
+      menu.classList.add("hidden");
+    }
+  }
+
+  function renderUserMenu() {
+    const menu = document.getElementById("userMenu");
+    const loggedIn = localStorage.getItem('loggedIn') === 'true';
+
+    menu.innerHTML = loggedIn
+      ? `
+        <a href="../dashboard" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+        <button onclick="logout()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+      `
+      : `
+        <a href="./login" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Login</a>
+        <a href="./signup" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Up</a>
+      `;
+  }
+
+  function logout() {
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('token'); // Optional: clear token
+    window.location.href = 'https://shoes.iyonicorp.com';
+  }
+
+  // Call on page load to setup menu correctly
+  document.addEventListener("DOMContentLoaded", renderUserMenu);
+</script>
+
+
+
+<!-- Hero Section (Half screen height) -->
+<section class="relative overflow-hidden text-white pt-16 h-[50vh] bg-transparent">
+  <!-- Animated Star Particles -->
+  <canvas id="starfield" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+  <!-- Center Sneaker Image -->
+  <img 
+    src="https://cdn.shopify.com/s/files/1/0293/9277/products/06-09-21Studio5_RT_11-31-33_22_THOMAS52_Red_0034_RG.jpg?v=1623436892&width=600&height=900&crop=center"
+    alt="Center Sneaker"
+    class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 sm:w-60 md:w-72 lg:w-[36rem] h-auto z-0 rotate-[10deg] pointer-events-none"
+  />
+
+  <!-- Slogan Text -->
+  <div class="relative z-30 flex justify-center items-center h-full">
+    <p class="bg-black bg-opacity-60 text-white px-4 py-2 rounded-md text-sm md:text-lg shadow-md">
+      Where Style Meets Motion
+    </p>
+  </div>
+
+  <!-- Floating Sneakers -->
+  <img 
+    src="https://cdn.shopify.com/s/files/1/0293/9277/files/09-12-23Studio5_CB_LW_10-47-06_16_POLAND02_Black_11960_CM.jpg?v=1694800305&width=600&height=900&crop=center" 
+    alt="Sneaker Left" 
+    class="block absolute left-[1%] top-4 w-20 sm:w-28 md:w-36 transform rotate-[-20deg] drop-shadow-2xl z-10"
+  />
+  <img 
+    src="https://cdn.shopify.com/s/files/1/0293/9277/files/07-21-23Studio8_CB_LW_10-04-24_7_AELLA1_Pink_9483_DQ.jpg?v=1690330867&width=600&height=900&crop=center" 
+    alt="Sneaker Right" 
+    class="block absolute right-[2%] top-8 w-24 sm:w-32 md:w-40 transform rotate-[25deg] drop-shadow-2xl z-10"
+  />
+  <img 
+    src="https://cdn.shopify.com/s/files/1/0293/9277/files/07-02-21Studio5_RT_14-20-04_47_WINDY_Pink_20991_KL.jpg?v=1733879780&width=1000&height=1500&crop=center"
+    alt="Sneaker Extra 1" 
+    class="block absolute left-[20%] bottom-4 w-20 sm:w-28 md:w-32 transform rotate-[15deg] drop-shadow-lg z-10"
+  />
+  <img 
+    src="https://cdn.shopify.com/s/files/1/0293/9277/products/Glamour_Up_Heeled_Sandals_-_Nude_DM.jpg?v=1572028746&width=600&height=900&crop=center"
+    alt="Sneaker Extra 2"
+    class="block absolute right-[15%] bottom-4 w-20 sm:w-24 md:w-28 transform rotate-[-10deg] drop-shadow-lg z-10"
+  />
+</section>
+
+<script>
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let stars = [];
+
+  function init() {
+    resize();
+    stars = [];
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.2,
+        alpha: Math.random(),
+        speed: 0.02 + Math.random() * 0.03
+      });
+    }
+    animate();
+  }
+
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    stars.forEach(star => {
+      star.alpha += star.speed;
+      if (star.alpha > 1) star.alpha = 0;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = `rgba(255,255,255,${star.alpha.toFixed(2)})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', resize);
+  init();
+</script>
+
+<!-- Category Section -->
+<section id="categories" class="py-12 w-full">
+  <h2 class="text-3xl font-bold text-center mb-10">Shop by Category</h2>
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6 w-full px-4 sm:px-6 lg:px-8">
+
+    <div onclick="openCategory('heels')" class="cursor-pointer group bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
+      <div class="aspect-[3/4] w-full bg-white flex items-center justify-center">
+        <img src="https://cdn.shopify.com/s/files/1/0293/9277/files/12-03-24_S10_17_STANDARD505_Black_CXB_10-12-32_4893_PXF_ES.jpg?v=1733524185&width=600&height=900&crop=center"
+             class="w-full h-full object-contain transition group-hover:scale-105" />
+      </div>
+      <div class="p-3 text-center">
+        <h3 class="text-lg font-semibold text-indigo-600">Heels</h3>
+      </div>
+    </div>
+
+    <!-- Repeat for each category -->
+    <div onclick="openCategory('sandals')" class="cursor-pointer group bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
+      <div class="aspect-[3/4] w-full bg-white flex items-center justify-center">
+        <img src="https://cdn.shopify.com/s/files/1/0293/9277/files/03-20-24_S15_10_LS12017_Tan_KJ_10-44-22__15625_CM_ES.jpg?v=1711741160&width=600&height=900&crop=center"
+             class="w-full h-full object-contain transition group-hover:scale-105" />
+      </div>
+      <div class="p-3 text-center">
+        <h3 class="text-lg font-semibold text-indigo-600">Sandals</h3>
+      </div>
+    </div>
+
+
+    <div onclick="openCategory('wedges')" class="cursor-pointer group bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
+      <div class="aspect-[3/4] w-full bg-white flex items-center justify-center">
+      <img src="https://cdn.shopify.com/s/files/1/0293/9277/products/01-08-20_MS_09-38-49_9_FANNIE100_Black_8721_WG.jpg?v=1610133012&width=600&height=900&crop=center"
+         class="w-full h-full object-contain transition group-hover:scale-105" />
+      </div>
+      <div class="p-3 text-center">
+      <h3 class="text-lg font-semibold text-indigo-600">Wedges</h3>
+      </div>
+    </div>
+
+    <div onclick="openCategory('slides')" class="cursor-pointer group bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
+      <div class="aspect-[3/4] w-full bg-white flex items-center justify-center">
+      <img src="https://cdn.shopify.com/s/files/1/0293/9277/files/05-16-25_S15_38_BLOWOUT25_Brown_CZ_14-05-30_FLATLAY_4966_PXF.jpg?v=1748383363&width=600&height=900&crop=center"
+         class="w-full h-full object-contain transition group-hover:scale-105" />
+      </div>
+      <div class="p-3 text-center">
+      <h3 class="text-lg font-semibold text-indigo-600">Slides</h3>
+      </div>
+    </div>
+
+    <div onclick="openCategory('boots')" class="cursor-pointer group bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
+      <div class="aspect-[3/4] w-full bg-white flex items-center justify-center">
+      <img src="https://cdn.shopify.com/s/files/1/0293/9277/products/10-19-22Studio5_RT_11-43-02_32_BEXIE3_Pink_1893_SG.jpg?v=1666218036&width=600&height=900&crop=center"
+         class="w-full h-full object-contain transition group-hover:scale-105" />
+      </div>
+      <div class="p-3 text-center">
+      <h3 class="text-lg font-semibold text-indigo-600">Boots</h3>
+      </div>
+    </div>
+
+    <div onclick="openCategory('sneakers')" class="cursor-pointer group bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
+      <div class="aspect-[3/4] w-full bg-white flex items-center justify-center">
+      <img src="https://cdn.shopify.com/s/files/1/0293/9277/files/05-23-23Studio8_CB_RS_12-57-49_50_MAD01_Orange_P_2418_MP.jpg?v=1744758533&width=600&height=900&crop=center"
+         class="w-full h-full object-contain transition group-hover:scale-105" />
+      </div>
+      <div class="p-3 text-center">
+      <h3 class="text-lg font-semibold text-indigo-600">Sneakers</h3>
+      </div>
+    </div>
+
+    <div onclick="openCategory('rubbers')" class="cursor-pointer group bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
+      <div class="aspect-[3/4] w-full bg-white flex items-center justify-center">
+      <img src="https://i.imgur.com/LkrIYYL.jpeg"
+         class="w-full h-full object-contain transition group-hover:scale-105" />
+      </div>
+      <div class="p-3 text-center">
+      <h3 class="text-lg font-semibold text-indigo-600">rubbers</h3>
+      </div>
+    </div>
+
+    <div onclick="openCategory('slippers')" class="cursor-pointer group bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition">
+      <div class="aspect-[3/4] w-full bg-white flex items-center justify-center">
+      <img src="https://cdn.shopify.com/s/files/1/0293/9277/files/06-27-23Studio8_CB_LW_13-54-29_63_MMSL004YEPK_Yellow_7508_SG.jpg?v=1688061967&width=600&height=900&crop=center"
+         class="w-full h-full object-contain transition group-hover:scale-105" />
+      </div>
+      <div class="p-3 text-center">
+      <h3 class="text-lg font-semibold text-indigo-600">Slippers</h3>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- Product Section -->
+<section id="products" class="py-16 w-full">
+  <h2 class="text-3xl font-bold text-center mb-12">All Shoes</h2>
+  <div id="product-list" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 sm:px-6"></div>
+</section>
+
+  <script>
+    const products = [
+      {
+        id: "PMA-2025-001",
+        category: "sneakers",
+        name: "Puma",
+        price: 3500,
+        description: "Step up your game with Puma sneakers—featuring lightweight mesh, responsive cushioning, and a modern, athletic look.",
+        details: [
+          "Lightweight, breathable mesh upper for cool comfort",
+          "Responsive midsole cushioning for all-day support",
+          "Durable rubber outsole for reliable traction",
+          "Contemporary design with signature Puma style"
+        ],
+        images: [
+          "https://i.imgur.com/R5WLp1Z.jpeg",
+          "https://i.imgur.com/cKU1qs7.jpeg"
+        ],
+        colors: ["white", "black"],
+        sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+      },
+      {
+        id: "PMA-2025-002",
+          category: "sneakers", 
+        name: "Puma",
+        price: 3500,
+        description: "Step up your game with Puma sneakers—featuring lightweight mesh, responsive cushioning, and a modern, athletic look.",
+        details: [
+          "Lightweight, breathable mesh upper for cool comfort",
+          "Responsive midsole cushioning for all-day support",
+          "Durable rubber outsole for reliable traction",
+          "Contemporary design with signature Puma style"
+        ],
+        images: [
+          'https://i.imgur.com/8XoZSiZ.jpeg',
+          'https://i.imgur.com/wVkljWy.jpeg'
+
+        ],
+        colors: ["black", "white"],
+        sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+      },
+     {
+        id: "WED-2025-005",
+        category: "wedges",
+        name: "Zara Wedge Platforms",
+        price: 2500,
+        description: "Step up your style with the Zara Wedge Platforms—where comfort meets contemporary fashion for any occasion.",
+        details: [
+          "Premium canvas upper with elegant, modern patterns",
+          "Lightweight 2.5-inch wedge heel for a flattering lift",
+          "Soft, cushioned footbed for all-day comfort",
+          "Adjustable ankle strap for a secure, personalized fit",
+          "Durable, slip-resistant rubber outsole for confident steps",
+          "Versatile design perfect for brunch, shopping, or casual evenings out"
+        ],
+        images: [
+          "https://i.imgur.com/rvxFeFX.jpeg",
+          "https://i.imgur.com/Bam6Tri.jpeg",
+          "https://i.imgur.com/BxMxO5P.jpeg",
+          "https://i.imgur.com/Mqzqimm.jpeg"
+        ],
+        colors: ["black","blue", "brown","red"],
+        sizes: [7, 8, 9, 10, 11]
+      },
+     {
+        id: "PMP-2025-008",
+        category: "rubbers",
+        name: "Vans Rubber Shoes",
+        price: 2200,
+        description: "Classic Vans-inspired rubber shoes with a sleek silhouette and comfortable sole for all-day style.",
+        details: [
+          "Durable canvas upper with signature Vans look",
+          "Vulcanized rubber sole for grip and flexibility",
+          "Cushioned insole for comfort",
+          "Versatile for casual wear, skateboarding, or street style"
+        ],
+        images: [
+          "https://i.imgur.com/LkrIYYL.jpeg",
+          'https://i.imgur.com/HIntVT7.jpeg',
+          'https://i.imgur.com/BXI7ZcJ.jpeg',
+          'https://i.imgur.com/2BDWurS.jpeg',
+          'https://i.imgur.com/lGL3jwo.jpeg'
+        ],
+        colors: ["white", "blue", "yellow", "red", "pink"],
+        sizes: [6, 7, 8, 9, 10]
+      },
+      {
+        id: "ytu-2025-009",
+        category: "sandals",
+        name: "Yaotu Sandal",
+        price: 2200,
+        description: "Step into summer with Yaotu Sandals—lightweight, flexible, and bursting with vibrant color for every adventure.",
+        details: [
+          "Adjustable ankle strap for a secure, custom fit",
+          "Flexible rubber sole for all-day comfort",
+          "Water-resistant materials for poolside or beach use",
+          "Available in multiple bright, eye-catching colors"
+        ],
+        images: [
+          "https://i.imgur.com/WSh0HAk.jpeg",
+          "https://i.imgur.com/haFU1uP.jpeg",
+          "https://i.imgur.com/YMK9HGY.jpeg",
+          "https://i.imgur.com/rK8rrp8.jpeg"
+        ],
+        colors: ["amber", "white", "black","rose"],
+        sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+      },
+     {
+        id: "SEL-2025-015",
+        category: "rubbers",
+        name: "Vans Double Color Block",
+        price: 2200,
+        description: "Trendy Vans-inspired rubbers with a modern square toe and stylish double color design.",
+        details: [
+          "Square toe design",
+          "Chunky block heel",
+          "Double color canvas upper",
+          "Signature Vans style",
+          "Comfort insole"
+        ],
+        images: [
+          "https://i.imgur.com/MqIy4K3.jpeg",
+          "https://i.imgur.com/rKLnQFm.jpeg",
+          "https://i.imgur.com/6b0tVLK.jpeg",
+          "https://i.imgur.com/Ft1Yz5o.jpeg"
+        ],
+        colors: ["blue", "red", "brown","black"],
+        sizes: [6, 7, 8, 9, 10]
+      },
+      {
+        id: "AdST-2025-016",
+        category: "sneakers",
+        name: "Adidas Stan Smith",
+        price: 2500,
+        description: "The iconic Adidas Stan Smith sneaker—clean, classic, and versatile for any style.",
+        details: [
+          "Smooth leather upper with signature perforated 3-Stripes",
+          "Comfortable textile lining",
+          "Durable rubber cupsole",
+          "Classic Stan Smith branding on tongue and heel tab"
+        ],
+        images: [
+          "https://i.imgur.com/lcrMDNv.jpeg",
+          "https://i.imgur.com/QWz4U3k.jpeg",
+          "https://cdn.shopify.com/s/files/1/0603/3031/1875/products/main-square_bc220298-a047-4c82-ab1c-709a82b3614e_x480.jpg?w=256&v=1696318793",
+          "https://i.imgur.com/DluQiof.jpeg"
+        ],
+        colors: ["white", "black","pink","green"],
+        sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+      },
+   {
+        id: "NKWE-2025-024",
+        category: "sneakers",
+        name: "Naked Wolfe",
+        price: 3800,
+        description: "Step out in bold style with Naked Wolfe sneakers—where luxury streetwear meets comfort and attitude.",
+        details: [
+          "Signature chunky sole for standout street style",
+          "Premium materials with Naked Wolfe branding",
+          "Breathable mesh and leather upper",
+          "Padded collar and tongue for all-day comfort",
+          "Perfect for fashion-forward, urban looks"
+        ],
+        images: [
+          "https://i.imgur.com/Ze8noqQ.jpeg",
+          "https://i.imgur.com/9qs917n.jpeg",
+          "https://i.imgur.com/hZ0Ul1Q.jpeg"
+        ],
+        colors: ["black", "blue", "green"],
+        sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+      },
+      {
+        id: "NKWBW-2025-025",
+        category: "sneakers",
+        name: "Naked Wolfe Black & White",
+        price: 3800,
+        description: "Make a statement with Naked Wolfe Black & White sneakers—bold, chunky, and designed for those who want to stand out.",
+        details: [
+          "Iconic chunky sole for maximum street style impact",
+          "Premium black and white colorway with signature Naked Wolfe branding",
+          "Breathable mesh and leather upper for comfort and durability",
+          "Padded collar and tongue for all-day wear",
+          "Perfect for fashion-forward, urban looks"
+        ],
+        images: [
+          "https://storage.googleapis.com/urbantreks/products/naked-wolfe.webp",
+          "https://res.cloudinary.com/dbepcxgu9/image/upload/v1723649742/products/naked-wolfe_xlO5CR.webp",
+          "https://i.imgur.com/SYpJbFd.jpeg"
+        ],
+        colors: ["black"],
+        sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+      },
+
+            {
+        id: "NKsl-2025-025",
+        category: "slides",
+        name: "Adidas slides",
+        price: 2000,
+        description: "Step into comfort and style with Adidas Slides—perfect for lounging, poolside, or casual outings.",
+        details: [
+          "Contoured footbed for superior comfort",
+          "Lightweight, water-friendly construction",
+          "Classic Adidas branding on the strap",
+          "Slip-on design for easy wear",
+          "Durable outsole for everyday use"
+        ],
+        images: [
+          "https://i.imgur.com/cixQ0Ac.jpeg",
+          "https://i.imgur.com/u9ekOqf.jpeg",
+          "https://i.imgur.com/9Hoq8DM.jpeg"
+        ],
+        colors: ["green","red", "blue"],
+        sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+      },
+
+      
+            {
+        id: "NKsl-2025-025",
+        category: "slides",
+        name: "Adidas Cool slides",
+        price: 2000,
+        description: "Step into comfort and style with Adidas Slides—perfect for lounging, poolside, or casual outings.",
+        details: [
+          "Contoured footbed for superior comfort",
+          "Lightweight, water-friendly construction",
+          "Classic Adidas branding on the strap",
+          "Slip-on design for easy wear",
+          "Durable outsole for everyday use"
+        ],
+        images: [
+          "https://i.imgur.com/tfQUMqm.jpeg",
+          "https://i.imgur.com/Vjmk5kJ.jpeg",
+          "https://i.imgur.com/INbyois.jpeg"
+        ],
+        colors: ["green","black", "brown"],
+        sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+      },
+
+    ];
+
+// Inject cards
+const container = document.getElementById("product-list");
+products.forEach(product => {
+  container.innerHTML += `
+    <div class="bg-transparent rounded-lg overflow-hidden hover:shadow-xl transition duration-300 flex flex-col h-[400px]">
+      <a href="./product?id=${product.id}" class="flex items-center justify-center h-[260px] w-full overflow-hidden">
+        <img src="${product.images[0]}" alt="${product.name}" class="object-contain h-full w-full" />
+      </a>
+      <div class="p-4 flex-1 flex flex-col">
+        <h3 class="text-lg font-semibold">${product.name}</h3>
+        <p class="text-gray-500 mb-2">ksh${product.price}</p>
+        <a href="./product?id=${product.id}" class="mt-auto block text-center bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500">View Product</a>
+      </div>
+    </div>
+  `;
+});
+
+
+    // Store all data in localStorage
+    localStorage.setItem("shoeProducts", JSON.stringify(products));
+    
+  </script>
+  <script>
+  function openCategory(name) {
+    window.location.href = `./category?name=${encodeURIComponent(name)}`;
+  }
+
+
+    function updateCartUI() {
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  const container = document.getElementById("cart-items");
+  const count = document.getElementById("cart-count");
+  container.innerHTML = "";
+
+  let total = 0;
+  count.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  cart.forEach((item, index) => {
+    const productImage = products.find(p => p.id === item.id)?.images[0] || '';
+    const subtotal = item.price * item.quantity;
+    total += subtotal;
+
+    const div = document.createElement('div');
+    div.className = 'flex items-start gap-3 border-b pb-3';
+
+    div.innerHTML = `
+      <img src="${productImage}" class="w-16 h-16 object-contain rounded" />
+      <div class="flex-1">
+        <p class="font-medium">${item.name}</p>
+        <p class="text-sm text-gray-500">Size: ${item.size}, Color: ${item.color}</p>
+        <p class="text-sm text-gray-700">ksh${item.price} × ${item.quantity} = <strong>ksh${subtotal.toFixed(2)}</strong></p>
+        <div class="flex items-center gap-2 mt-1">
+          <button onclick="changeQuantity(${index}, -1)" class="text-xs bg-gray-200 px-2 rounded">−</button>
+          <span>${item.quantity}</span>
+          <button onclick="changeQuantity(${index}, 1)" class="text-xs bg-gray-200 px-2 rounded">+</button>
+          <button onclick="removeCartItem(${index})" class="text-xs text-red-600 ml-auto">Remove</button>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(div);
+  });
+
+  // Total section
+  const totalDiv = document.createElement('div');
+  totalDiv.className = 'pt-3 text-right font-semibold text-indigo-600';
+  totalDiv.innerText = `Total: ksh${total.toFixed(2)}`;
+  container.appendChild(totalDiv);
+}
+
+// Toggle dropdown
+document.getElementById('cart-icon').addEventListener('click', () => {
+  document.getElementById('cart-dropdown').classList.toggle('hidden');
+});
+
+updateCartUI();
+
+
+function proceedToCheckout() {
+  if (!isUserLoggedIn()) return showSignupPrompt();
+
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  if (!cart.length) return alert("Your cart is empty.");
+
+  // ✅ Go to the checkout page
+  window.location.href = "./checkout";
+}
+
+
+function changeQuantity(index, delta) {
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  if (cart[index]) {
+    cart[index].quantity += delta;
+    if (cart[index].quantity <= 0) {
+      cart.splice(index, 1);
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCartUI();
+  }
+}
+
+function removeCartItem(index) {
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartUI();
+}
+
+function closeCartDropdown() {
+  const dropdown = document.getElementById('cart-dropdown');
+  if (!dropdown.classList.contains('hidden')) {
+    dropdown.classList.add('hidden');
+  }
+}
+// Close cart dropdown on scroll
+window.addEventListener('scroll', () => {
+  closeCartDropdown();
+});
+
+
+<!-- Add these functions at the end of your <script> -->
+function isUserLoggedIn() {
+  return !!localStorage.getItem('token');
+}
+
+function showSignupPrompt() {
+  const modal = document.getElementById('signupPrompt');
+  if (!modal) {
+    // Create modal dynamically if not exists
+    const promptHTML = `
+      <div id="signupPrompt" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-[350px] text-center">
+          <h3 class="text-xl font-semibold mb-4">Please Sign Up or Log In</h3>
+          <p class="mb-4 text-gray-600">You need to be logged in to add products or place orders.</p>
+          <a href="signup.html" class="inline-block bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition">Go to Sign Up</a>
+          <button onclick="hideSignupPrompt()" class="block text-sm text-gray-500 mt-4 hover:underline">Cancel</button>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', promptHTML);
+  } else {
+    modal.classList.remove('hidden');
+  }
+}
+
+function hideSignupPrompt() {
+  const modal = document.getElementById('signupPrompt');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+}
+</script>
+
+
+
+</body>
+</html>

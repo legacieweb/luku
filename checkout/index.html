@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout | lukumisteress</title>
+  <meta name="description" content="Checkout your favorite shoes at lukumisteress. Fast next-day delivery, secure payment, and exclusive discounts. Shop now at https://lukumisteress.iyonicorp.com." />
+  <meta name="keywords" content="lukumisteress, shoes, checkout, buy shoes online, sneaker store, fast delivery, discounts, coupons, USA, Canada" />
+  <meta name="author" content="lukumisteress" />
+  <link rel="canonical" href="https://lukumisteress.iyonicorp.com/checkout/" />
+  <meta property="og:title" content="Checkout | lukumisteress" />
+  <meta property="og:description" content="Secure checkout for your lukumisteress shoe order. Enjoy fast delivery and exclusive offers." />
+  <meta property="og:url" content="https://lukumisteress.iyonicorp.com/checkout/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://i.imgur.com/NvQLami.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Checkout | lukumisteress" />
+  <meta name="twitter:description" content="Checkout your favorite shoes at lukumisteress. Fast next-day delivery, secure payment, and exclusive discounts." />
+  <meta name="twitter:image" content="https://i.imgur.com/NvQLami.png" />
+  <link rel="icon" href="https://i.imgur.com/NvQLami.png" type="image/png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+<!-- Header -->
+<header class="flex justify-between items-center px-6 md:px-10 py-4 bg-transparent shadow-md sticky top-0 z-50">
+  <!-- Logo -->
+  <a href="https://lukumisteress.iyonicorp.com" class="flex items-center space-x-3">
+    <img src="https://i.imgur.com/NvQLami.png" alt="luku misteress Logo" class="w-14 h-14 md:w-20 md:h-20 object-contain" />
+  </a>
+
+  <!-- Navigation -->
+  <nav class="flex items-center space-x-6 text-base">
+    <a href="https://lukumisteress.iyonicorp.com" class="text-gray-700 hover:text-indigo-600 transition font-medium">Home</a>
+</header>
+
+
+  
+  <div class="max-w-5xl mx-auto py-10 px-6">
+    <h1 class="text-3xl font-bold text-indigo-700 mb-8">Checkout</h1>
+
+    <div class="grid md:grid-cols-2 gap-10">
+      <div>
+        <h2 class="text-xl font-semibold mb-4">Your Items</h2>
+        <div id="cart-summary" class="space-y-4"></div>
+        <div class="text-right mt-4">
+          <p class="text-lg font-semibold">Total: Ksh<span id="checkout-total">0.00</span></p>
+          <p class="text-sm text-gray-500">Includes shipping fee: Ksh<span id="shipping-fee">0.00</span></p>
+        </div>
+
+<!-- Automatic Discount Info -->
+<div id="automatic-discount-section" class="mt-6">
+  <h3 class="font-medium mb-2">🎁 Milestone: Get 10% Off if Total Reaches Ksh10000</h3>
+  <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+    <div id="discount-progress-bar" class="bg-green-500 h-2.5 rounded-full" style="width: 0%"></div>
+  </div>
+  <p id="milestone-message" class="text-sm text-gray-600">Add more items to qualify.</p>
+</div>
+
+<!-- Manual Coupon Section -->
+<div class="mt-6">
+  <label class="block font-medium mb-2">Have a coupon?</label>
+  <div class="flex gap-2">
+    <input id="coupon-input" type="text" placeholder="Enter coupon code" class="border rounded w-full px-4 py-2" />
+    <button onclick="applyCoupon()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Apply</button>
+  </div>
+  <p id="coupon-status" class="mt-2 text-sm text-green-600 hidden">Coupon applied successfully!</p>
+</div>
+<div>          <!-- Delivery Info Section -->
+<div class="mb-6">
+  <p class="text-gray-700">
+    🚚 <strong>Estimated Delivery:</strong> Next day delivery available.
+    Your order will arrive within 24 hours after placing.
+  </p>
+</div>
+</div>
+</div>
+
+  <form id="checkout-form" class="bg-white p-6 rounded shadow space-y-4">
+    <h2 class="text-xl font-semibold mb-4 text-indigo-700">Delivery Information</h2>
+    <input type="text" id="name" name="name" placeholder="Full Name" class="w-full border px-4 py-2 rounded" readonly />
+    <input type="email" id="email" name="email" placeholder="Email Address" class="w-full border px-4 py-2 rounded" readonly />
+    <input type="tel" id="phone" name="phone" placeholder="Phone Number" class="w-full border px-4 py-2 rounded" required />
+
+    <select name="country" id="country" class="w-full border px-4 py-2 rounded" required onchange="updateStateOptions()">
+      <option value="">Select Country</option>
+      <option value="Kenya" selected>Kenya</option>
+    </select>
+
+    <select name="state" id="state" class="w-full border px-4 py-2 rounded" required onchange="updateShippingFee()">
+      <option value="">Select State/Province</option>
+    </select>
+
+    <input type="text" name="city" placeholder="City" class="w-full border px-4 py-2 rounded" required />
+    <input type="text" name="zip" placeholder="ZIP Code" class="w-full border px-4 py-2 rounded" required />
+    <input type="text" name="address" placeholder="Street Address" class="w-full border px-4 py-2 rounded" required />
+    <button type="submit" class="bg-green-600 text-white w-full py-2 rounded hover:bg-green-700">Place Order</button>
+    <button type="button" onclick="handlePayOnDelivery()" class="bg-yellow-500 text-white w-full py-2 rounded hover:bg-yellow-600">
+  Pay on Delivery (Delivery Fee Only)
+</button>
+
+  </form>
+    </div>
+  </div>
+
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+<script>
+let discount = 0;
+let checkoutCart = [];
+let shippingFee = 0;
+let hasUsedAutomaticDiscount = false;
+
+const shippingRates = {
+  Kenya: {
+    "Nairobi": 250,
+    "Mombasa": 350,
+    "Kisumu": 300,
+    "Nakuru": 280,
+    "Eldoret": 320,
+    "Thika": 270,
+    "Machakos": 260,
+    "Meru": 310,
+    "Nyeri": 290,
+    "Kitale": 330,
+    "Kericho": 300,
+    "Embu": 280,
+    "Kakamega": 320,
+    "Garissa": 400,
+    "Lamu": 450,
+    "Narok": 350,
+    "Naivasha": 270,
+    "Bungoma": 340,
+    "Isiolo": 370,
+    "Voi": 360
+  }
+};
+
+function updateStateOptions() {
+  const country = document.getElementById("country").value;
+  const stateSelect = document.getElementById("state");
+  stateSelect.innerHTML = '<option value="">Select State/Province</option>';
+
+  if (shippingRates[country]) {
+    Object.keys(shippingRates[country]).forEach(state => {
+  const option = document.createElement("option");
+  option.value = state;
+  option.textContent = state;
+  stateSelect.appendChild(option);
+    });
+    // Optionally, select Nairobi by default if Kenya is selected
+    if (country === "Kenya") {
+  stateSelect.value = "Nairobi";
+    }
+  }
+
+  updateShippingFee(); // reset
+}
+
+// Initialize state options on page load if Kenya is selected
+document.addEventListener("DOMContentLoaded", function() {
+  updateStateOptions();
+});
+
+function updateShippingFee() {
+  const country = document.getElementById("country").value;
+  const state = document.getElementById("state").value;
+
+  if (shippingRates[country] && shippingRates[country][state]) {
+    shippingFee = shippingRates[country][state];
+  } else {
+    shippingFee = 5; // default
+  }
+
+  document.getElementById("shipping-fee").textContent = shippingFee.toFixed(2);
+  renderCartSummary();
+}
+
+async function checkIfUsedAutomaticDiscount() {
+  const token = localStorage.getItem("token");
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    const user = await res.json();
+    return user?.hasUsedAutomaticDiscount || false;
+  } catch (err) {
+    console.warn("Could not verify automatic discount status.");
+    return false;
+  }
+}
+
+async function renderCartSummary() {
+  hasUsedAutomaticDiscount = await checkIfUsedAutomaticDiscount();
+
+  const buyNowItem = JSON.parse(localStorage.getItem("buynowItem") || "null");
+  const cartData = JSON.parse(localStorage.getItem("cart") || "[]");
+  const shoeProducts = JSON.parse(localStorage.getItem("shoeProducts") || "[]");
+  checkoutCart = buyNowItem ? [buyNowItem] : cartData;
+
+  const container = document.getElementById("cart-summary");
+  const totalField = document.getElementById("checkout-total");
+  const progressBar = document.getElementById("discount-progress-bar");
+  const milestoneMsg = document.getElementById("milestone-message");
+  const discountSection = document.getElementById("automatic-discount-section");
+
+  container.innerHTML = "";
+  let total = 0;
+
+  checkoutCart.forEach(item => {
+    const product = shoeProducts.find(p => p.id === item.id) || {};
+    item.image = product.images?.[0] || '';
+    item.productId = item.id;
+    item.quantity = item.quantity || 1;
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
+
+    const div = document.createElement('div');
+    div.className = 'flex gap-4 items-center bg-white p-4 rounded shadow';
+    div.innerHTML = `
+      <img src="${item.image}" class="w-20 h-20 object-contain rounded border" />
+      <div class="flex-1">
+        <p class="font-semibold">${item.name}</p>
+        <p class="text-sm text-gray-500">Size: ${item.size}, Color: ${item.color}</p>
+        <p class="text-sm text-gray-700">Qty: ${item.quantity} × Ksh${item.price} = Ksh${itemTotal.toFixed(2)}</p>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  const percent = Math.min((total / 10000) * 100, 100);
+  progressBar.style.width = `${percent}%`;
+  progressBar.setAttribute('aria-valuenow', percent);
+
+  // Milestone handling
+  if (hasUsedAutomaticDiscount || total < 10000) {
+    discountSection.style.display = "block";
+    if (total >= 350 && !hasUsedAutomaticDiscount) {
+      milestoneMsg.innerHTML = `<span class="text-green-600 font-semibold">🎉 You've reached Ksh10000! Applying "AUTOMATIC DISCOUNT".</span>`;
+      applyAutomaticDiscount();
+    } else {
+      milestoneMsg.textContent = `You're Ksh${(10000 - total).toFixed(2)} away from a 10% discount!`;
+    }
+  } else {
+    discountSection.style.display = "none";
+  }
+
+  const finalTotal = total - discount + shippingFee;
+  totalField.textContent = finalTotal.toFixed(2);
+}
+
+function applyAutomaticDiscount() {
+  const couponCode = "AUTOMATIC DISCOUNT";
+
+  fetch(`http://localhost:5000/api/coupons/${couponCode}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data && data.amount) {
+      discount = data.amount;
+      document.getElementById("coupon-status").textContent = `🎉 "AUTOMATIC DISCOUNT" applied! Discount: Ksh${discount}`;
+      document.getElementById("coupon-status").classList.remove("hidden");
+
+      markAutomaticDiscountAsUsed();
+      renderCartSummary();
+    }
+  })
+  .catch(() => {
+    console.warn("Automatic discount not available.");
+  });
+}
+
+async function markAutomaticDiscountAsUsed() {
+  const token = localStorage.getItem("token");
+  await fetch('http://localhost:5000/api/auth/mark-automatic-discount-used', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
+  });
+}
+
+function applyCoupon() {
+  const code = document.getElementById("coupon-input").value.trim();
+  if (!code) return;
+
+  fetch(`http://localhost:5000/api/coupons/${code}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.amount) {
+        discount = data.amount;
+        document.getElementById("coupon-status").textContent = `Coupon applied! Discount: Ksh${discount}`;
+        document.getElementById("coupon-status").classList.remove("hidden");
+        renderCartSummary();
+      } else {
+        alert("Invalid or expired coupon.");
+      }
+    })
+    .catch(() => alert("Coupon error. Try again."));
+}
+
+document.getElementById("checkout-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const token = localStorage.getItem("token");
+  const form = e.target;
+
+  if (!checkoutCart.length) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  const name = form.name.value;
+  const email = form.email.value;
+  const phone = form.phone.value;
+  const address = form.address.value;
+  const country = form.country.value;
+  const state = form.state.value;
+  const city = form.city.value;
+  const zip = form.zip.value;
+  const couponCode = document.getElementById("coupon-input").value.trim();
+  const totalText = document.getElementById("checkout-total").textContent;
+  const totalAmount = Math.round(parseFloat(totalText) * 100);
+
+  if (isNaN(totalAmount) || totalAmount < 100) {
+    alert("Invalid total amount.");
+    return;
+  }
+
+  const items = checkoutCart.map(item => ({
+    name: item.name,
+    price: item.price,
+    image: item.image || '',
+    productId: item.id,
+    quantity: item.quantity || 1,
+    size: item.size,
+    color: item.color
+  }));
+
+  const deliveryAddress = { name, email, phone, address, country, state, city, zip };
+
+  const handler = PaystackPop.setup({
+    key: 'pk_test_232531a5c927ef2cc67ed1b85af3f26e3b8ed2f2',
+    email: email,
+    amount: totalAmount,
+    currency: "KES",
+    callback: function (response) {
+      fetch('http://localhost:5000/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          items,
+          deliveryAddress,
+          discount,
+          shippingFee,
+          coupon: couponCode || undefined,
+          paymentRef: response.reference
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.order) {
+          localStorage.setItem("lastOrderSummary", JSON.stringify({
+            items,
+            discount,
+            shippingFee,
+            total: items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+          }));
+
+          localStorage.removeItem("cart");
+          localStorage.removeItem("buynowItem");
+          localStorage.removeItem("discount");
+
+          window.location.href = "../thankyou";
+        } else {
+          alert(data.message || "⚠️ Order save failed");
+        }
+      })
+      .catch(err => {
+        console.error("Backend error:", err);
+        alert("Something went wrong saving your order.");
+      });
+    },
+    onClose: function () {
+      alert('❌ Payment cancelled.');
+    }
+  });
+
+  handler.openIframe();
+});
+
+function autofillUser() {
+  fetch("http://localhost:5000/api/auth/me", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.name) {
+      document.getElementById("name").value = data.name;
+      document.getElementById("email").value = data.email;
+    }
+  });
+}
+
+// INIT
+autofillUser();
+renderCartSummary();
+</script>
+<script>
+function handlePayOnDelivery() {
+  const token = localStorage.getItem("token");
+  const form = document.getElementById("checkout-form");
+
+  if (!checkoutCart.length) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  const name = form.name.value;
+  const email = form.email.value;
+  const phone = form.phone.value;
+  const address = form.address.value;
+  const country = form.country.value;
+  const state = form.state.value;
+  const city = form.city.value;
+  const zip = form.zip.value;
+  const couponCode = document.getElementById("coupon-input").value.trim();
+
+  const deliveryOnlyAmount = Math.round(shippingFee * 100);
+
+  const items = checkoutCart.map(item => ({
+    name: item.name,
+    price: item.price,
+    image: item.image || '',
+    productId: item.id,
+    quantity: item.quantity || 1,
+    size: item.size,
+    color: item.color
+  }));
+
+  const deliveryAddress = { name, email, phone, address, country, state, city, zip };
+
+  const handler = PaystackPop.setup({
+    key: 'pk_test_232531a5c927ef2cc67ed1b85af3f26e3b8ed2f2',
+    email: email,
+    amount: deliveryOnlyAmount,
+    currency: "KES",
+    callback: function (response) {
+      // After paying delivery fee, save the order as "pay-on-delivery"
+      fetch('http://localhost:5000/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          items,
+          deliveryAddress,
+          discount,
+          shippingFee,
+          coupon: couponCode || undefined,
+          paymentRef: response.reference,
+          paymentMethod: "pay-on-delivery"  // <-- flag for backend
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.order) {
+          localStorage.setItem("lastOrderSummary", JSON.stringify({
+            items,
+            discount,
+            shippingFee,
+            total: items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+          }));
+
+          localStorage.removeItem("cart");
+          localStorage.removeItem("buynowItem");
+          localStorage.removeItem("discount");
+
+          window.location.href = "../thankyou";
+        } else {
+          alert(data.message || "⚠️ Order save failed");
+        }
+      })
+      .catch(err => {
+        console.error("Backend error:", err);
+        alert("Something went wrong saving your order.");
+      });
+    },
+    onClose: function () {
+      alert('❌ Payment for delivery was cancelled.');
+    }
+  });
+
+  handler.openIframe();
+}
+</script>
+
+</body>
+</html>

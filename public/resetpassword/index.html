@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Set New Password | lukumisteress</title>
+  <meta name="description" content="Reset your password securely on lukumisteress. Set a new password to access your account at https://lukumisteress.iyonicorp.com." />
+  <meta name="keywords" content="lukumisteress, password reset, set new password, account security, login, iyonicorp" />
+  <meta name="author" content="lukumisteress" />
+  <link rel="canonical" href="https://lukumisteress.iyonicorp.com/resetpassword/" />
+  <meta property="og:title" content="Set New Password | lukumisteress" />
+  <meta property="og:description" content="Reset your password securely on lukumisteress." />
+  <meta property="og:url" content="https://lukumisteress.iyonicorp.com/resetpassword/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="lukumisteress" />
+  <meta property="og:image" content="https://i.imgur.com/NvQLami.png" />
+  <link rel="icon" href="https://i.imgur.com/NvQLami.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
+
+  <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full">
+    <h1 class="text-2xl font-semibold mb-6 text-center">Set New Password</h1>
+
+    <form id="new-password-form" class="space-y-5">
+      <input 
+        type="password" 
+        name="password" 
+        placeholder="New Password" 
+        required 
+        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+      <button 
+        type="submit"
+        id="set-password-btn"
+        class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
+      >
+        Set Password
+      </button>
+    </form>
+  </div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+
+  if (!token) {
+    alert('No token provided');
+    window.location.href = 'http://localhost:5000/login';   
+  }
+
+  document.getElementById('new-password-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const button = document.getElementById('set-password-btn');
+    const originalText = button.textContent;
+
+    // Prevent double-click or resubmit
+    button.disabled = true;
+    button.textContent = 'Setting password...';
+
+    const password = e.target.password.value;
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/auth/reset-password/${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert('Password changed successfully!');
+
+        // Remove token from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Redirect to external website
+        window.location.href = 'http://localhost:5000/login'; 
+      } else {
+        alert(data.message || 'Failed to reset password');
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      alert('Something went wrong. Please try again.');
+    } finally {
+      // Re-enable button and restore text
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+  });
+</script>
+
+</body>
+</html>
