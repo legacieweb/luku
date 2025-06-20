@@ -334,17 +334,31 @@ function renderProduct() {
   document.getElementById("product-section").innerHTML = `
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
       <div>
-        <div class="swiper mySwiper2 mb-4 bg-transparent">
+        <div class="swiper mySwiper2 mb-4 bg-transparent relative">
           <div class="swiper-wrapper">
-            ${product.images.map(img => `<div class="swiper-slide"><img src="${img}" class="w-full object-contain" /></div>`).join("")}
+            ${product.images.map(img => `
+              <div class="swiper-slide">
+                <img src="${img}" class="w-full object-contain" />
+              </div>
+            `).join("")}
           </div>
+
+          <!-- Navigation Arrows -->
+          <div class="swiper-button-prev absolute left-0 top-1/2 transform -translate-y-1/2 z-10 text-3xl text-white bg-black bg-opacity-50 rounded-full px-3 py-1 cursor-pointer hover:bg-opacity-70 select-none">&#10094;</div>
+          <div class="swiper-button-next absolute right-0 top-1/2 transform -translate-y-1/2 z-10 text-3xl text-white bg-black bg-opacity-50 rounded-full px-3 py-1 cursor-pointer hover:bg-opacity-70 select-none">&#10095;</div>
         </div>
+
         <div class="swiper mySwiperThumbs mt-2">
           <div class="swiper-wrapper">
-            ${product.images.map(img => `<div class="swiper-slide !w-auto"><img src="${img}" class="h-20 w-28 object-contain rounded cursor-pointer" /></div>`).join("")}
+            ${product.images.map(img => `
+              <div class="swiper-slide !w-auto">
+                <img src="${img}" class="h-20 w-28 object-contain rounded cursor-pointer" />
+              </div>
+            `).join("")}
           </div>
         </div>
       </div>
+
       <div class="space-y-6">
         <h2 class="text-4xl font-bold">${product.name}</h2>
         <p class="text-sm text-gray-400">Product ID: <span class="font-mono text-gray-700">${product.id}</span></p>
@@ -387,27 +401,29 @@ function renderProduct() {
         </div>
       </div>
     </div>
+
     <section class="mt-12 max-w-4xl mx-auto">
       <h3 class="text-2xl font-bold mb-4">Product Details</h3>
       <ul class="list-disc list-inside space-y-2 text-gray-600">${productDetailsHTML}</ul>
     </section>
-<!-- Related Products -->
-<section class="mt-16 bg-transparent px-8 py-10 rounded shadow-md">
-  <h3 class="text-2xl font-bold mb-6">Related Products</h3>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    ${products.filter(p => p.id !== product.id && p.category === product.category).slice(0, 3).map(p => `
-      <div class="rounded-lg overflow-hidden shadow hover:shadow-md transition bg-transparent">
-        <a href="../product?id=${p.id}">
-          <img src="${p.images[0]}" alt="${p.name}" class="w-full h-52 object-contain"/>
-        </a>
-        <div class="p-4">
-          <h4 class="font-semibold">${p.name}</h4>
-          <p class="text-gray-600">$${p.price}</p>
-          <a href="../product?id=${p.id}" class="text-indigo-600 text-sm hover:underline">View Product</a>
-        </div>
-      </div>`).join('')}
-  </div>
-</section>
+
+    <section class="mt-16 bg-transparent px-8 py-10 rounded shadow-md">
+      <h3 class="text-2xl font-bold mb-6">Related Products</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        ${products.filter(p => p.id !== product.id && p.category === product.category).slice(0, 3).map(p => `
+          <div class="rounded-lg overflow-hidden shadow hover:shadow-md transition bg-transparent">
+            <a href="../product?id=${p.id}">
+              <img src="${p.images[0]}" alt="${p.name}" class="w-full h-52 object-contain"/>
+            </a>
+            <div class="p-4">
+              <h4 class="font-semibold">${p.name}</h4>
+              <p class="text-gray-600">$${p.price}</p>
+              <a href="../product?id=${p.id}" class="text-indigo-600 text-sm hover:underline">View Product</a>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </section>
   `;
   initializeSwiper();
 }
@@ -429,6 +445,10 @@ function initializeSwiper() {
     keyboard: {
       enabled: true,
       onlyInViewport: true,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
     },
     thumbs: {
       swiper: thumbs,
