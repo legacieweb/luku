@@ -94,8 +94,12 @@
     <input type="text" name="zip" placeholder="ZIP Code" class="w-full border px-4 py-2 rounded" required />
     <input type="text" name="address" placeholder="Street Address" class="w-full border px-4 py-2 rounded" required />
     <button type="submit" class="bg-green-600 text-white w-full py-2 rounded hover:bg-green-700">Place Order</button>
-   <div id="pod-section" class="space-y-2 hidden">
-  <button type="button" onclick="handlePayOnDelivery()" class="bg-yellow-500 text-white w-full py-2 rounded hover:bg-yellow-600">
+<div id="pod-section" class="space-y-2">
+  <button
+    type="button"
+    onclick="handlePayOnDelivery()"
+    class="bg-yellow-500 text-white w-full py-2 rounded hover:bg-yellow-600 transition"
+  >
     Pay on Delivery (Delivery Fee Only)
   </button>
 </div>
@@ -534,12 +538,18 @@ async function checkPoDEligibility() {
     });
     const orders = await res.json();
 
-    const podSection = document.getElementById("pod-section");
+    const podBtn = document.querySelector("#pod-section button");
     const podWarning = document.getElementById("pod-warning");
 
     if (Array.isArray(orders) && orders.length > 0) {
-      podSection.classList.remove("hidden");
+      // ✅ Returning customer - enable PoD
+      podBtn.disabled = false;
+      podBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      podWarning.classList.add("hidden");
     } else {
+      // ❌ First-time customer - disable PoD
+      podBtn.disabled = true;
+      podBtn.classList.add("opacity-50", "cursor-not-allowed");
       podWarning.classList.remove("hidden");
     }
   } catch (err) {
