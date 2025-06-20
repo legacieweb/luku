@@ -259,13 +259,16 @@ function applyAutomaticDiscount() {
   })
   .then(res => res.json())
   .then(data => {
-    if (data && data.amount) {
+    if (data && data.amount && data.currency === "KES") {
       discount = data.amount;
       document.getElementById("coupon-status").textContent = `🎉 "AUTOMATIC DISCOUNT" applied! Discount: Ksh${discount}`;
       document.getElementById("coupon-status").classList.remove("hidden");
 
       markAutomaticDiscountAsUsed();
       renderCartSummary();
+    } else {
+      document.getElementById("coupon-status").textContent = `Automatic discount is only available in Kenyan Shillings (KES).`;
+      document.getElementById("coupon-status").classList.remove("hidden");
     }
   })
   .catch(() => {
