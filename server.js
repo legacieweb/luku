@@ -266,6 +266,16 @@ app.post('/api/orders', authMiddleware, async (req, res) => {
   }
 
   try {
+    // ✅ Block PoD for new users
+    if (paymentMethod === 'pay-on-delivery') {
+      const previousOrders = await Order.find({ userId: req.user.id }).limit(1);
+      if (!previousOrders.length) {
+        return res.status(403).json({
+          message: 'Payment on delivery is only available for returning customers.'
+        });
+      }
+    }
+
     let validCoupon = null;
 
     if (coupon) {
@@ -301,7 +311,6 @@ app.post('/api/orders', authMiddleware, async (req, res) => {
     const itemTotal = normalizedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
     const finalPrice = itemTotal - (discount || 0) + (shippingFee || 0);
 
-    // ⬇️ Set flags based on payment method
     const isDeliveryFeePaid = true;
     const isFullyPaid = paymentMethod === 'pay-online';
 
@@ -326,9 +335,6 @@ app.post('/api/orders', authMiddleware, async (req, res) => {
       await validCoupon.save();
     }
 
-    // ---------------------------
-    // 📧 Emails
-    // ---------------------------
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
@@ -392,6 +398,7 @@ app.post('/api/orders', authMiddleware, async (req, res) => {
     res.status(500).json({ message: 'Server error during order processing' });
   }
 });
+
 
 
 
