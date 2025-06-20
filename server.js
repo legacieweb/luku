@@ -431,6 +431,8 @@ app.get('/api/admin/orders', adminAuth, async (req, res) => {
 
     const formatted = orders.map(order => {
       const itemTotal = order.items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+      const total = order.totalPrice || (itemTotal - (order.discount || 0) + (order.shippingFee || 0));
+
       return {
         id: order._id,
         user: {
@@ -439,11 +441,14 @@ app.get('/api/admin/orders', adminAuth, async (req, res) => {
         },
         items: order.items,
         deliveryAddress: order.deliveryAddress,
-        totalPrice: order.totalPrice || (itemTotal - (order.discount || 0) + (order.shippingFee || 0)),
+        totalPrice: total,
         discount: order.discount || 0,
         shippingFee: order.shippingFee || 0,
         coupon: order.coupon || null,
         paymentRef: order.paymentRef || null,
+        paymentMethod: order.paymentMethod || 'pay-online',
+        isDeliveryFeePaid: order.isDeliveryFeePaid || false,
+        isFullyPaid: order.isFullyPaid || false,
         status: order.status || 'Pending',
         createdAt: order.createdAt
       };
@@ -455,6 +460,7 @@ app.get('/api/admin/orders', adminAuth, async (req, res) => {
     res.status(500).json({ message: 'Failed to load orders' });
   }
 });
+
 
 
 // ✅ USER: Get current user's orders
