@@ -33,6 +33,7 @@
 <script>
   const summary = JSON.parse(localStorage.getItem("lastOrderSummary") || "null");
   const container = document.getElementById("order-summary");
+  const totalPaidElem = document.getElementById("total-paid");
 
   if (!summary || !summary.items || summary.items.length === 0) {
     container.innerHTML = '<p class="text-center text-white/80 italic">No order data found.</p>';
@@ -54,7 +55,7 @@
         <div class="flex-1">
           <p class="font-semibold text-lg">${name}</p>
           <p class="text-sm">Size: ${item.size || '-'}, Color: ${item.color || '-'}</p>
-          <p class="mt-1 font-semibold">Ksh${itemPrice} × ${quantity} = Ksh${itemTotal.toFixed(2)}</p>
+          <p class="mt-1 font-semibold">$${itemPrice} × ${quantity} = $${itemTotal.toFixed(2)}</p>
         </div>
       `;
       container.appendChild(div);
@@ -63,44 +64,31 @@
     const discount = summary.discount || 0;
     const shippingFee = summary.shippingFee || 0;
     const finalAmount = subtotal - discount + shippingFee;
-    const paymentMethod = summary.paymentMethod || 'N/A';
-    const isFullyPaid = summary.isFullyPaid;
-    const isDeliveryFeePaid = summary.isDeliveryFeePaid;
 
     // Add Summary Table
     const summaryHTML = `
-      <div class="bg-white bg-opacity-20 rounded-lg p-4 mt-6 space-y-2 text-white">
-        <p><strong>Subtotal:</strong> Ksh${subtotal.toFixed(2)}</p>
-        <p><strong>Shipping Fee:</strong> KSh${shippingFee.toFixed(2)}</p>
-        <p><strong>Discount:</strong> -Ksh${discount.toFixed(2)}</p>
+      <div class="bg-white bg-opacity-20 rounded-lg p-4 mt-6 space-y-2">
+        <p><strong>Subtotal:</strong> $${subtotal.toFixed(2)}</p>
+        <p><strong>Shipping Fee:</strong> $${shippingFee.toFixed(2)}</p>
+        <p><strong>Discount:</strong> -$${discount.toFixed(2)}</p>
         <hr class="border-white/30 my-2">
-        <p class="font-bold text-lg"><strong>Total Paid:</strong> KSh${finalAmount.toFixed(2)}</p>
+        <p class="font-bold text-lg"><strong>Total Paid:</strong> $${finalAmount.toFixed(2)}</p>
       </div>
     `;
     container.insertAdjacentHTML('afterend', summaryHTML);
-
-    // Payment & fulfillment info
-    const paymentDetailsHTML = `
-      <div class="bg-white bg-opacity-20 rounded-lg p-4 mt-4 space-y-1 text-sm text-white">
-        <p>🧾 <strong>Payment Method:</strong> <span class="${paymentMethod === 'pay-on-delivery' ? 'text-yellow-300' : 'text-green-300'}">${paymentMethod === 'pay-on-delivery' ? 'Pay on Delivery' : 'Paid Online'}</span></p>
-        <p>💰 <strong>Fully Paid:</strong> <span class="${isFullyPaid ? 'text-green-300' : 'text-red-300'}">${isFullyPaid ? 'Yes' : 'No (Payment on delivery)'}</span></p>
-        <p>🚚 <strong>Delivery Fee Paid:</strong> <span class="${isDeliveryFeePaid ? 'text-green-300' : 'text-red-300'}">${isDeliveryFeePaid ? 'Yes' : 'No'}</span></p>
-      </div>
-    `;
-    container.insertAdjacentHTML('afterend', paymentDetailsHTML);
 
     // Coupon Info
     if (summary.coupon && summary.coupon !== '') {
       const couponHTML = `
         <div class="mt-4 text-center">
-          <p class="text-green-300 font-semibold">Coupon Applied: <span class="text-white">${summary.coupon}</span></p>
+          <p class="text-green-300 font-semibold">🎟️ Coupon Applied: <span class="text-white">${summary.coupon}</span></p>
         </div>
       `;
       container.insertAdjacentHTML('afterend', couponHTML);
     }
   }
 
-  // Countdown & progress
+  // Countdown and progress bar
   const countdownElem = document.getElementById("countdown");
   const progressBar = document.getElementById("progress-bar");
   let seconds = 10;
@@ -112,10 +100,10 @@
       return;
     }
     countdownElem.textContent = seconds;
-    progressBar.style.width = `${(10 - seconds) * 10}%`;
+    progressBar.style.width = (seconds / 50) * 100 + "%";
   }
 
-  progressBar.style.width = "0%";
+  progressBar.style.width = "100%";
   const intervalId = setInterval(updateCountdown, 1000);
 
   document.getElementById("go-dashboard").addEventListener("click", () => {
@@ -123,11 +111,12 @@
     window.location.href = "../dashboard";
   });
 
-  // Clean up
+  // OPTIONAL: clear summary after use
   setTimeout(() => {
     localStorage.removeItem("lastOrderSummary");
   }, 20000);
 </script>
+
 
 <script>
     setInterval(() => {
