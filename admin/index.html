@@ -345,7 +345,7 @@ function renderOrders(orderList) {
       : '';
 
     const discountHTML = order.discount > 0
-      ? `<p class="mb-1 text-sm text-red-500">💸 Discount: −$${order.discount.toFixed(2)}</p>`
+      ? `<p class="mb-1 text-sm text-red-500">💸 Discount: −Ksh${order.discount.toFixed(2)}</p>`
       : '';
 
     const shippingHTML = order.shippingFee > 0
@@ -358,6 +358,24 @@ function renderOrders(orderList) {
       ? `<p class="text-sm text-gray-500">💳 Paystack Ref: <code>${order.paymentRef}</code></p>`
       : '';
 
+    // NEW: Payment method and flags
+    const paymentSummary = `
+      <div class="mt-2 text-sm">
+        <p class="text-gray-600">
+          🧾 <strong>Payment Method:</strong>
+          <span class="${order.paymentMethod === 'pay-on-delivery' ? 'text-yellow-600' : 'text-green-700'}">
+            ${order.paymentMethod === 'pay-on-delivery' ? 'Pay on Delivery' : 'Paid Online'}
+          </span>
+        </p>
+        <p class="${order.isDeliveryFeePaid ? 'text-green-700' : 'text-red-600'}">
+          ✔ Delivery Fee Paid: ${order.isDeliveryFeePaid ? 'Yes' : 'No'}
+        </p>
+        <p class="${order.isFullyPaid ? 'text-green-700' : 'text-orange-600'}">
+          💰 Fully Paid: ${order.isFullyPaid ? 'Yes' : 'No (Collect on delivery)'}
+        </p>
+      </div>
+    `;
+
     div.innerHTML = `
       <p class="mb-2"><strong>User:</strong> ${order.user.name} (${order.user.email})</p>
       ${delivery}
@@ -367,6 +385,7 @@ function renderOrders(orderList) {
       ${shippingHTML}
       <p class="mb-2"><strong>Total Paid:</strong> Ksh${totalPrice}</p>
       ${paymentRefHTML}
+      ${paymentSummary}
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">${itemsHTML}</div>
       <p class="mt-3 text-sm text-gray-500">🕒 Ordered on: ${new Date(order.createdAt).toLocaleString()}</p>
     `;
