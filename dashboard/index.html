@@ -177,7 +177,7 @@
   }
 
 async function fetchUserProfile() {
-  const res = await fetch('http://localhost:5000/api/auth/me', {
+  const res = await fetch('https://lukumisteress.onrender.com/api/auth/me', {
     headers: { Authorization: `Bearer ${token}` }
   });
   if (!res.ok) throw new Error('Unauthorized');
@@ -194,7 +194,7 @@ async function fetchOrders() {
   container.innerHTML = `<p class="text-gray-500">Loading orders...</p>`;
 
   try {
-    const res = await fetch('http://localhost:5000/api/user/orders', {
+    const res = await fetch('https://lukumisteress.onrender.com/api/user/orders', {
       headers: { Authorization: `Bearer ${token}` }
     });
 
@@ -293,7 +293,7 @@ async function fetchUserOrdersAndStats() {
   if (!token) return;
 
   try {
-    const res = await fetch('http://localhost:5000/api/user/orders', {
+    const res = await fetch('https://lukumisteress.onrender.com/api/user/orders', {
       headers: { Authorization: `Bearer ${token}` }
     });
     const orders = await res.json();
@@ -461,7 +461,7 @@ document.getElementById('change-password-form').addEventListener('submit', async
   }
 
   try {
-    const res = await fetch('http://localhost:5000/api/auth/change-password', {
+    const res = await fetch('https://lukumisteress.onrender.com/api/auth/change-password', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

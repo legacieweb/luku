@@ -2,107 +2,100 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - lukumisteress</title>
-  <meta name="description" content="Login to lukumisteress to access your account and manage your preferences. Secure, fast, and easy authentication." />
-  <meta name="keywords" content="lukumisteress, login, authentication, account, secure, iyonicorp" />
-  <meta name="author" content="lukumisteress" />
-  <link rel="canonical" href="https://lukumisteress.iyonicorp.com/login/" />
-  <meta property="og:title" content="Login - lukumisteress" />
-  <meta property="og:description" content="Access your lukumisteress account securely. Login to manage your preferences and settings." />
-  <meta property="og:url" content="https://lukumisteress.iyonicorp.com/login/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="lukumisteress" />
-  <meta property="og:image" content="https://i.imgur.com/NvQLami.png" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Login - lukumisteress" />
-  <meta name="twitter:description" content="Login to lukumisteress to access your account securely." />
-  <meta name="twitter:image" content="https://i.imgur.com/NvQLami.png" />
+  <meta name="description" content="Login to lukumisteress to access your account securely." />
+  <meta name="keywords" content="lukumisteress, login, fashion, secure, iyonicorp" />
   <link rel="icon" href="https://i.imgur.com/NvQLami.png" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
 
-  <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full">
-    <h1 class="text-2xl font-semibold mb-6 text-center">Login to luku misteress</h1>
+<body class="bg-gradient-to-br from-indigo-200 via-white to-purple-200 min-h-screen flex items-center justify-center">
 
-    <form id="login-form" class="space-y-5">
-      <input 
-        type="email" 
-        name="email" 
-        placeholder="Email" 
-        required 
-        autocomplete="off"
-        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-      />
-      <input 
-        type="password" 
-        name="password" 
-        placeholder="Password" 
-        required 
-        autocomplete="off"
-        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-      />
-      <button 
-        type="submit"
-        id="login-btn"
-        class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
-      >
-        Login
-      </button>
+  <div class="w-full max-w-4xl mx-auto px-4 md:px-10 py-10">
+    <div class="flex flex-col items-center mb-8">
+      <img src="https://i.imgur.com/NvQLami.png" alt="lukumisteress logo" class="w-40 md:w-56 mb-4" />
+      <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800">Welcome Back</h1>
+      <p class="text-gray-600 text-center mt-2 text-sm md:text-base">Log in to continue your fashion journey</p>
+    </div>
+
+    <form id="login-form" class="w-full bg-white bg-opacity-90 backdrop-blur rounded-2xl shadow-lg p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="flex flex-col col-span-1">
+        <label class="text-gray-700 font-medium mb-1">Email Address</label>
+        <input type="email" name="email" placeholder="you@example.com" required
+          class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+
+      <div class="flex flex-col col-span-1">
+        <label class="text-gray-700 font-medium mb-1">Password</label>
+        <input type="password" name="password" placeholder="••••••••" required
+          class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+
+      <div class="col-span-1 flex items-end">
+        <button type="submit" id="login-btn"
+          class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold text-lg shadow-md hover:bg-indigo-700 transition-all duration-300">
+          Login
+        </button>
+      </div>
+
+      <div class="col-span-1 flex items-end justify-end text-sm">
+        <a href="public/resetpasswordrequest/" class="text-indigo-900 hover:underline font-medium">
+          Forgot Password?
+        </a>
+      </div>
     </form>
 
-    <p class="mt-4 text-center text-sm text-gray-600">
-      <a href="public/resetpasswordrequest/" class="text-indigo-900 hover:underline">Forgot Password?</a>
-    </p>
-
-    <p class="mt-4 text-center text-sm text-gray-600">
+    <p class="text-center mt-6 text-sm text-gray-700">
       Don't have an account?
-      <a href="../signup" class="text-indigo-600 hover:underline">Sign Up</a>
+      <a href="../signup" class="text-indigo-600 hover:underline font-medium">Sign Up</a>
     </p>
   </div>
 
-<script>
-  document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    const button = document.getElementById('login-btn');
-    const originalText = button.textContent;
+      const button = document.getElementById('login-btn');
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Logging in...';
 
-    // Prevent double-click or resubmit
-    button.disabled = true;
-    button.textContent = 'Logging in...';
+      const email = e.target.email.value.trim();
+      const password = e.target.password.value;
 
-    const email = e.target.email.value.trim();
-    const password = e.target.password.value;
+      try {
+        const res = await fetch('https://lukumisteress.onrender.com/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
 
-    try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+        const data = await res.json();
 
-      const data = await res.json();
-
-      if (res.ok) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('loggedIn', 'true');
-        localStorage.setItem('user', JSON.stringify({ name: data.name, email: data.email }));
-        window.location.href = 'https://lukumisteress.iyonicorp.com'; // Redirect to home page after successful login
-      } else {
-        alert(data.message || 'Login failed');
+        if (res.ok) {
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('user', JSON.stringify({ name: data.name, email: data.email }));
+          window.location.href = 'https://lukumisteress.iyonicorp.com';
+        } else {
+          alert(data.message || 'Login failed');
+        }
+      } catch (err) {
+        console.error('Login Error:', err);
+        alert('Something went wrong. Please try again.');
+      } finally {
+        button.disabled = false;
+        button.textContent = originalText;
       }
-    } catch (err) {
-      console.error('Login Error:', err);
-      alert('Something went wrong. Please try again.');
-    } finally {
-      // Re-enable button and restore text
-      button.disabled = false;
-      button.textContent = originalText;
-    }
-  });
-</script>
+    });
+  </script>
 
 </body>
 </html>

@@ -2,41 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up | lukumisteress</title>
-  <meta name="description" content="Create your account on lukumisteress to access exclusive features. Sign up quickly and securely at https://lukumisteress.iyonicorp.com." />
-  <meta name="keywords" content="lukumisteress, sign up, register, create account, shoes, fashion, iyonicorp" />
-  <meta name="author" content="lukumisteress" />
-  <link rel="canonical" href="https://lukumisteress.iyonicorp.com/signup/" />
-  <meta property="og:title" content="Sign Up | lukumisteress" />
-  <meta property="og:description" content="Join lukumisteress and unlock exclusive features. Sign up now!" />
-  <meta property="og:url" content="https://lukumisteress.iyonicorp.com/signup/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="lukumisteress" />
-  <meta property="og:image" content="https://i.imgur.com/NvQLami.png" />
+  <meta name="description" content="Create your account on lukumisteress to access exclusive features." />
   <link rel="icon" href="https://i.imgur.com/NvQLami.png" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen font-sans">
 
-  <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full">
-    <h1 class="text-2xl font-semibold mb-6 text-center">Create an Account</h1>
-    <form id="signup-form" class="space-y-5">
-      <input type="text" name="name" placeholder="Full Name" required
-        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-      <input type="email" name="email" placeholder="Email" required
-        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-      <input type="password" name="password" placeholder="Password" required
-        class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-      <button type="submit"
-        id="signup-btn"
-        class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">
-        Sign Up
-      </button>
+<body class="bg-gradient-to-br from-indigo-200 via-white to-purple-200 min-h-screen flex items-center justify-center">
+
+  <div class="w-full max-w-4xl mx-auto px-4 md:px-10 py-10">
+    <div class="flex flex-col items-center mb-8">
+      <img src="https://i.imgur.com/NvQLami.png" alt="lukumisteress logo" class="w-40 md:w-56 mb-4" />
+      <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800">Join lukumisteress</h1>
+      <p class="text-gray-600 text-center mt-2 text-sm md:text-base">Step into your style journey and unlock exclusive features</p>
+    </div>
+
+    <form id="signup-form" class="w-full grid grid-cols-1 md:grid-cols-2 gap-6 bg-white bg-opacity-90 backdrop-blur rounded-2xl shadow-lg p-8 md:p-12">
+      <div class="flex flex-col col-span-1">
+        <label class="text-gray-700 font-medium mb-1">Full Name</label>
+        <input type="text" name="name" placeholder="Your full name" required
+          class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+
+      <div class="flex flex-col col-span-1">
+        <label class="text-gray-700 font-medium mb-1">Email Address</label>
+        <input type="email" name="email" placeholder="example@email.com" required
+          class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+
+      <div class="flex flex-col col-span-1">
+        <label class="text-gray-700 font-medium mb-1">Password</label>
+        <input type="password" name="password" placeholder="••••••••••" required
+          class="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+
+      <div class="col-span-1 flex items-end">
+        <button type="submit" id="signup-btn"
+          class="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-semibold text-lg shadow-md hover:bg-indigo-700 transition-all duration-300">
+          Sign Up
+        </button>
+      </div>
     </form>
-    <p class="mt-4 text-center text-sm text-gray-600">
+
+    <p class="text-center mt-6 text-sm text-gray-700">
       Already have an account?
-      <a href="../login" class="text-indigo-600 hover:underline">Login</a>
+      <a href="../login" class="text-indigo-600 hover:underline font-medium">Login</a>
     </p>
   </div>
 
@@ -47,7 +64,6 @@
       const button = document.getElementById('signup-btn');
       const originalText = button.textContent;
 
-      // Prevent double submission
       button.disabled = true;
       button.textContent = 'Signing up...';
 
@@ -57,7 +73,7 @@
       const password = form.password.value;
 
       try {
-        const res = await fetch('http://localhost:5000/api/auth/signup', {
+        const res = await fetch('https://lukumisteress.onrender.com/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password })
@@ -77,7 +93,6 @@
         console.error('Signup Error:', err);
         alert('Something went wrong.');
       } finally {
-        // Re-enable button and restore text
         button.disabled = false;
         button.textContent = originalText;
       }

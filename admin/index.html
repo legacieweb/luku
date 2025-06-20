@@ -184,7 +184,7 @@ document.getElementById('admin-login-form').addEventListener('submit', async fun
   const password = document.getElementById('adminPassword').value;
 
   try {
-    const res = await fetch('http://localhost:5000/api/admin/login',  {
+    const res = await fetch('https://lukumisteress.onrender.com/api/admin/login',  {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -241,7 +241,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 async function fetchOrders() {
   try {
-    const res = await fetch('http://localhost:5000/api/admin/orders', {
+    const res = await fetch('https://lukumisteress.onrender.com/api/admin/orders', {
       headers: { Authorization: 'Bearer ' + token }
     });
 
@@ -377,7 +377,7 @@ function renderOrders(orderList) {
 
 async function updateOrderStatus(orderId, newStatus) {
   try {
-    const res = await fetch(`http://localhost:5000/api/admin/orders/${orderId}/status`, {
+    const res = await fetch(`https://lukumisteress.onrender.com/api/admin/orders/${orderId}/status`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -400,7 +400,7 @@ async function updateOrderStatus(orderId, newStatus) {
 }
 
     async function fetchCoupons() {
-      const res = await fetch('http://localhost:5000/api/admin/coupons', {
+      const res = await fetch('https://lukumisteress.onrender.com/api/admin/coupons', {
         headers: { Authorization: 'Bearer ' + token }
       });
       const coupons = await res.json();
@@ -425,7 +425,7 @@ async function updateOrderStatus(orderId, newStatus) {
       const code = document.getElementById('couponCode').value;
       const amount = parseFloat(document.getElementById('couponAmount').value);
 
-      const res = await fetch('http://localhost:5000/api/admin/coupons', {
+      const res = await fetch('https://lukumisteress.onrender.com/api/admin/coupons', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -440,7 +440,7 @@ async function updateOrderStatus(orderId, newStatus) {
     }
 
     async function deleteCoupon(id) {
-      const res = await fetch(`http://localhost:5000/api/admin/coupons/${id}`, {
+      const res = await fetch(`https://lukumisteress.onrender.com/api/admin/coupons/${id}`, {
         method: 'DELETE',
         headers: { Authorization: 'Bearer ' + token }
       });
@@ -450,7 +450,7 @@ async function updateOrderStatus(orderId, newStatus) {
       fetchCoupons();
     }
 async function fetchUsers() {
-  const res = await fetch('http://localhost:5000/api/admin/users', {
+  const res = await fetch('https://lukumisteress.onrender.com/api/admin/users', {
     headers: { Authorization: 'Bearer ' + token }
   });
   const users = await res.json();
@@ -472,7 +472,7 @@ async function fetchUsers() {
 }
 
 async function showUserDetails(userId) {
-  const res = await fetch(`http://localhost:5000/api/admin/users/${userId}/details`, {
+  const res = await fetch(`https://lukumisteress.onrender.com/api/admin/users/${userId}/details`, {
     headers: { Authorization: 'Bearer ' + token }
   });
 
@@ -595,7 +595,7 @@ function updateProductInventory(productName) {
 
 async function fetchAdminAnalytics() {
   try {
-    const res = await fetch('http://localhost:5000/api/admin/orders', {
+    const res = await fetch('https://lukumisteress.onrender.com/api/admin/orders', {
       headers: { Authorization: 'Bearer ' + token }
     });
 

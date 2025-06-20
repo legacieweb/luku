@@ -177,7 +177,7 @@ function updateShippingFee() {
 async function checkIfUsedAutomaticDiscount() {
   const token = localStorage.getItem("token");
   try {
-    const res = await fetch("http://localhost:5000/api/auth/me", {
+    const res = await fetch("https://lukumisteress.onrender.com/api/auth/me", {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -252,7 +252,7 @@ async function renderCartSummary() {
 function applyAutomaticDiscount() {
   const couponCode = "AUTOMATIC DISCOUNT";
 
-  fetch(`http://localhost:5000/api/coupons/${couponCode}`, {
+  fetch(`https://lukumisteress.onrender.com/api/coupons/${couponCode}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
@@ -275,7 +275,7 @@ function applyAutomaticDiscount() {
 
 async function markAutomaticDiscountAsUsed() {
   const token = localStorage.getItem("token");
-  await fetch('http://localhost:5000/api/auth/mark-automatic-discount-used', {
+  await fetch('https://lukumisteress.onrender.com/api/auth/mark-automatic-discount-used', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -288,7 +288,7 @@ function applyCoupon() {
   const code = document.getElementById("coupon-input").value.trim();
   if (!code) return;
 
-  fetch(`http://localhost:5000/api/coupons/${code}`, {
+  fetch(`https://lukumisteress.onrender.com/api/coupons/${code}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
@@ -348,12 +348,12 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
   const deliveryAddress = { name, email, phone, address, country, state, city, zip };
 
   const handler = PaystackPop.setup({
-    key: 'pk_test_232531a5c927ef2cc67ed1b85af3f26e3b8ed2f2',
+    key: 'pk_live_7ab8e015626516d7d00210b2e7fe169805c226b8',
     email: email,
     amount: totalAmount,
     currency: "KES",
     callback: function (response) {
-      fetch('http://localhost:5000/api/orders', {
+      fetch('https://lukumisteress.onrender.com/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -401,7 +401,7 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
 });
 
 function autofillUser() {
-  fetch("http://localhost:5000/api/auth/me", {
+  fetch("https://lukumisteress.onrender.com/api/auth/me", {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
@@ -454,13 +454,13 @@ function handlePayOnDelivery() {
   const deliveryAddress = { name, email, phone, address, country, state, city, zip };
 
   const handler = PaystackPop.setup({
-    key: 'pk_test_232531a5c927ef2cc67ed1b85af3f26e3b8ed2f2',
+    key: 'pk_live_7ab8e015626516d7d00210b2e7fe169805c226b8',
     email: email,
     amount: deliveryOnlyAmount,
     currency: "KES",
     callback: function (response) {
       // After paying delivery fee, save the order as "pay-on-delivery"
-      fetch('http://localhost:5000/api/orders', {
+      fetch('https://lukumisteress.onrender.com/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
