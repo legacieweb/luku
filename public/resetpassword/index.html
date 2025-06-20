@@ -54,7 +54,7 @@
     <div class="bg-white rounded-xl shadow-lg p-8 max-w-sm text-center">
       <h2 class="text-xl font-semibold text-green-600 mb-4">Password changed successfully!</h2>
       <p class="text-gray-700 mb-6">You can now log in to your account.</p>
-      <button onclick="window.location.pathname = 'https://lukumisteress.iyonicorp.com/login'" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition">
+      <button onclick="window.location.pathname = '/login'" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition">
         Click to Login
       </button>
     </div>
@@ -66,7 +66,7 @@
 
     if (!token) {
       alert('No token provided.');
-      window.location.pathname = 'https://lukumisteress.iyonicorp.com//login'; // Client-side SPA-style redirect
+      window.location.pathname = '/login'; // Client-side SPA-style redirect
     }
 
     document.getElementById('new-password-form').addEventListener('submit', async (e) => {
