@@ -17,136 +17,433 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Extra: Make modal scrollable on small screens */
-    @media (max-width: 480px) {
-      #change-password-modal .w-96 {
-        width: 95vw !important;
-        min-width: 0 !important;
-        max-width: 100vw !important;
-        padding: 1rem !important;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    * {
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
+    }
+
+    /* Smooth transitions */
+    * {
+      transition: all 0.2s ease;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #667eea;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #764ba2;
+    }
+
+    /* Glassmorphism effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .glass-dark {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Hover effects */
+    .hover-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Sidebar active state */
+    .nav-item {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-item.active::before,
+    .nav-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    /* Animated gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Card animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
       }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    /* Stat card pulse */
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+      }
+    }
+
+    .stat-card {
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    /* Mobile sidebar overlay */
+    .sidebar-overlay {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    /* Responsive grid improvements */
+    @media (min-width: 1536px) {
+      .container-2xl {
+        max-width: 1536px;
+      }
+    }
+
+    @media (min-width: 1920px) {
+      .container-3xl {
+        max-width: 1800px;
+      }
+    }
+
+    /* Modal improvements */
+    .modal-content {
+      animation: fadeInUp 0.3s ease;
+    }
+
+    /* Chart container */
+    .chart-container {
+      position: relative;
+      height: 400px;
+    }
+
+    @media (max-width: 768px) {
+      .chart-container {
+        height: 300px;
+      }
+    }
+
+    /* Order card hover effect */
+    .order-card {
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .order-card:hover {
+      border-left-color: #667eea;
+      transform: translateX(5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Status badge animations */
+    .status-badge {
+      animation: fadeInUp 0.5s ease;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      border: 3px solid rgba(102, 126, 234, 0.1);
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen font-sans text-gray-800">
+<body class="min-h-screen">
 
-<div class="flex flex-col md:flex-row min-h-screen">
+<div class="flex min-h-screen">
   <!-- Sidebar -->
-  <aside id="sidebar" class="w-64 max-w-full bg-white shadow-md p-6 hidden md:block fixed md:static inset-y-0 left-0 z-30 transition-transform duration-200">
-    <h2 class="text-2xl font-bold text-indigo-700 mb-6">luku misteress</h2>
-    <nav class="space-y-4">
-      <button onclick="showSectionAndHideSidebar('dashboard')" class="block w-full text-left text-indigo-600 font-semibold">Dashboard</button>
-      <button onclick="showSectionAndHideSidebar('orders')" class="block w-full text-left hover:text-indigo-500">My Orders</button>
-      <button onclick="window.location.href='https://lukumisteress.iyonicorp.com'; hideSidebar();" class="block w-full text-left hover:text-indigo-500">Shop</button>
-      <button onclick="showSectionAndHideSidebar('profile')" class="block w-full text-left hover:text-indigo-500">setting</button>
-      <button onclick="logout()" class="block w-full text-left text-red-500 mt-6 hover:underline">Logout</button>
-    </nav>
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 glass transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl">
+    <div class="flex flex-col h-full p-6">
+      <!-- Logo -->
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold gradient-text mb-2">luku misteress</h2>
+        <p class="text-sm text-gray-500">Your Shopping Dashboard</p>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 space-y-2">
+        <button onclick="showSectionAndHideSidebar('dashboard')" class="nav-item active w-full text-left px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          Dashboard
+        </button>
+        <button onclick="showSectionAndHideSidebar('orders')" class="nav-item w-full text-left px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          My Orders
+        </button>
+        <button onclick="window.location.href='https://lukumisteress.iyonicorp.com'; hideSidebar();" class="nav-item w-full text-left px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          Shop
+        </button>
+        <button onclick="showSectionAndHideSidebar('profile')" class="nav-item w-full text-left px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          Settings
+        </button>
+      </nav>
+
+      <!-- Logout Button -->
+      <button onclick="logout()" class="w-full px-4 py-3 rounded-lg font-medium text-white bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+        </svg>
+        Logout
+      </button>
+    </div>
   </aside>
 
-  <!-- Hamburger Menu (Right Side) -->
-  <button id="hamburger-btn" class="fixed top-4 right-4 z-40 md:hidden bg-blue-600 rounded-full p-2 shadow focus:outline-none" aria-label="Open Menu">
-    <svg class="w-7 h-7 text-black" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+  <!-- Sidebar Overlay (Mobile) -->
+  <div id="sidebar-overlay" class="fixed inset-0 sidebar-overlay z-40 hidden md:hidden" onclick="hideSidebar()"></div>
+
+  <!-- Hamburger Menu (Mobile) -->
+  <button id="hamburger-btn" class="fixed top-6 right-6 z-50 md:hidden glass-dark rounded-full p-3 shadow-lg hover:shadow-xl" aria-label="Open Menu">
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
     </svg>
   </button>
 
   <!-- Main Content -->
-  <main class="flex-1 p-2 sm:p-4 md:p-6 md:ml-64">
-    <div class="max-w-4xl mx-auto space-y-8">
+  <main class="flex-1 md:ml-72 p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto space-y-8">
 
-<!-- Dashboard Section -->
-<section id="dashboard-section" class="bg-white rounded-lg shadow p-4 sm:p-6">
-  <h1 class="text-2xl sm:text-3xl font-bold text-indigo-700 mb-4">Welcome, <span id="username">User</span></h1>
-  <p class="text-gray-600 text-xs sm:text-sm mb-6">Quick overview of your account.</p>
+      <!-- Dashboard Section -->
+      <section id="dashboard-section" class="space-y-6 fade-in-up">
+        <!-- Welcome Header -->
+        <div class="glass rounded-2xl shadow-xl p-6 lg:p-8 hover-lift">
+          <h1 class="text-3xl lg:text-4xl font-bold gradient-text mb-2">Welcome back, <span id="username">User</span>! 👋</h1>
+          <p class="text-gray-600 text-sm lg:text-base">Here's what's happening with your account today.</p>
+        </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6">
-    <div class="bg-indigo-50 rounded-lg p-4 shadow text-center">
-      <h2 class="text-base sm:text-lg font-semibold text-indigo-800">🛍️ Total Orders</h2>
-      <p class="text-2xl sm:text-3xl font-bold text-indigo-700 mt-2" id="total-orders">0</p>
-    </div>
-    <div class="bg-green-50 rounded-lg p-4 shadow text-center">
-      <h2 class="text-base sm:text-lg font-semibold text-green-800">💰 Total Spent</h2>
-      <p class="text-2xl sm:text-3xl font-bold text-green-700 mt-2">Ksh<span id="total-spent">0.00</span></p>
-    </div>
-  </div>
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Total Orders Card -->
+          <div class="glass rounded-2xl shadow-xl p-6 hover-lift stat-card">
+            <div class="flex items-center justify-between mb-4">
+              <div class="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+              </div>
+            </div>
+            <h2 class="text-sm font-medium text-gray-600 mb-1">Total Orders</h2>
+            <p class="text-4xl font-bold text-gray-800" id="total-orders">0</p>
+            <p class="text-xs text-gray-500 mt-2">All time purchases</p>
+          </div>
 
-  <div class="bg-white rounded-lg shadow p-2 sm:p-4">
-    <h3 class="text-base sm:text-lg font-semibold mb-2 text-indigo-600">📊 Purchase Timeline</h3>
-    <div class="w-full overflow-x-auto">
-      <canvas id="spendingChart" class="w-full min-w-[300px] h-48 sm:h-64"></canvas>
-    </div>
-  </div>
-</section>
+          <!-- Total Spent Card -->
+          <div class="glass rounded-2xl shadow-xl p-6 hover-lift stat-card">
+            <div class="flex items-center justify-between mb-4">
+              <div class="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+            </div>
+            <h2 class="text-sm font-medium text-gray-600 mb-1">Total Spent</h2>
+            <p class="text-4xl font-bold text-gray-800">Ksh <span id="total-spent">0.00</span></p>
+            <p class="text-xs text-gray-500 mt-2">Lifetime spending</p>
+          </div>
 
-      <!-- Orders Section -->
-      <section id="orders-section" class="bg-white rounded-lg shadow p-4 sm:p-6 hidden">
-        <h2 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4">📦 Your Orders</h2>
-        <div id="orders-list" class="space-y-4 text-xs sm:text-sm text-gray-700">
-          <p>Loading orders...</p>
+          <!-- Quick Action Card -->
+          <div class="glass rounded-2xl shadow-xl p-6 hover-lift stat-card md:col-span-2 lg:col-span-1">
+            <div class="flex items-center justify-between mb-4">
+              <div class="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+              </div>
+            </div>
+            <h2 class="text-sm font-medium text-gray-600 mb-3">Quick Actions</h2>
+            <button onclick="window.location.href='https://lukumisteress.iyonicorp.com'" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-700 shadow-lg hover:shadow-xl">
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="glass rounded-2xl shadow-xl p-6 lg:p-8 hover-lift">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h3 class="text-xl lg:text-2xl font-bold text-gray-800">📊 Purchase Timeline</h3>
+              <p class="text-sm text-gray-500 mt-1">Track your spending over time</p>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="spendingChart"></canvas>
+          </div>
         </div>
       </section>
 
-<!-- Profile Section -->
-<section id="profile-section" class="bg-white rounded-lg shadow p-4 sm:p-6 hidden">
-  <h2 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4">👤 Your Profile</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <p><strong>Name:</strong> <span id="profile-name">N/A</span></p>
-    <p><strong>Email:</strong> <span id="profile-email">N/A</span></p>
-  </div>
+      <!-- Orders Section -->
+      <section id="orders-section" class="hidden space-y-6 fade-in-up">
+        <div class="glass rounded-2xl shadow-xl p-6 lg:p-8">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl lg:text-3xl font-bold gradient-text">📦 Your Orders</h2>
+              <p class="text-sm text-gray-500 mt-1">View and track all your purchases</p>
+            </div>
+          </div>
+          <div id="orders-list" class="space-y-4">
+            <div class="flex justify-center items-center py-12">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-<!-- Change Password Button -->
-<button onclick="showChangePasswordModal()" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition mb-4 mt-4 w-full sm:w-auto">
-  Change Password
-</button>
+      <!-- Profile Section -->
+      <section id="profile-section" class="hidden space-y-6 fade-in-up">
+        <div class="glass rounded-2xl shadow-xl p-6 lg:p-8">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl lg:text-3xl font-bold gradient-text">👤 Your Profile</h2>
+              <p class="text-sm text-gray-500 mt-1">Manage your account settings</p>
+            </div>
+          </div>
 
-<!-- Change Password Modal -->
-<div id="change-password-modal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden z-50">
-  <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 w-full max-w-xs sm:max-w-md">
-    <h3 class="text-lg sm:text-xl font-semibold mb-4">Change Password</h3>
-    <form id="change-password-form" class="space-y-4">
-      <input type="password" name="currentPassword" placeholder="Current Password" required class="w-full border rounded px-3 py-2" />
-      <input type="password" name="newPassword" placeholder="New Password" required class="w-full border rounded px-3 py-2" />
-      <input type="password" name="confirmPassword" placeholder="Confirm New Password" required class="w-full border rounded px-3 py-2" />
-      <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">Change Password</button>
-    </form>
-    <button onclick="hideChangePasswordModal()" class="mt-4 text-red-500 hover:underline w-full">Cancel</button>
-  </div>
-</div>
-</section>
+          <!-- Profile Info Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-100">
+              <p class="text-sm font-medium text-gray-600 mb-2">Full Name</p>
+              <p class="text-xl font-bold text-gray-800" id="profile-name">N/A</p>
+            </div>
+            <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-6 border border-indigo-100">
+              <p class="text-sm font-medium text-gray-600 mb-2">Email Address</p>
+              <p class="text-xl font-bold text-gray-800" id="profile-email">N/A</p>
+            </div>
+          </div>
+
+          <!-- Change Password Button -->
+          <button onclick="showChangePasswordModal()" class="w-full md:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-700 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+            </svg>
+            Change Password
+          </button>
+        </div>
+      </section>
 
     </div>
   </main>
 </div>
 
+<!-- Change Password Modal -->
+<div id="change-password-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center hidden z-50 p-4">
+  <div class="glass rounded-2xl shadow-2xl p-6 lg:p-8 w-full max-w-md modal-content">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="text-2xl font-bold gradient-text">🔐 Change Password</h3>
+      <button onclick="hideChangePasswordModal()" class="text-gray-400 hover:text-gray-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <form id="change-password-form" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+        <input type="password" name="currentPassword" placeholder="Enter current password" required class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-indigo-500 focus:outline-none" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+        <input type="password" name="newPassword" placeholder="Enter new password" required class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-indigo-500 focus:outline-none" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+        <input type="password" name="confirmPassword" placeholder="Confirm new password" required class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:border-indigo-500 focus:outline-none" />
+      </div>
+      <button type="submit" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-700 shadow-lg hover:shadow-xl">
+        Update Password
+      </button>
+    </form>
+    <button onclick="hideChangePasswordModal()" class="mt-4 text-red-500 hover:text-red-600 font-medium w-full text-center">Cancel</button>
+  </div>
+</div>
+
 <script>
   // Hamburger menu logic
   const sidebar = document.getElementById('sidebar');
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
   const hamburgerBtn = document.getElementById('hamburger-btn');
 
   function showSidebar() {
-    sidebar.classList.remove('hidden');
-    sidebar.classList.add('block');
+    sidebar.classList.remove('-translate-x-full');
+    sidebarOverlay.classList.remove('hidden');
   }
+
   function hideSidebar() {
-    sidebar.classList.add('hidden');
-    sidebar.classList.remove('block');
+    sidebar.classList.add('-translate-x-full');
+    sidebarOverlay.classList.add('hidden');
   }
 
   hamburgerBtn.addEventListener('click', () => {
-    if (sidebar.classList.contains('hidden')) {
+    if (sidebar.classList.contains('-translate-x-full')) {
       showSidebar();
     } else {
-      hideSidebar();
-    }
-  });
-
-  // Hide sidebar when clicking outside (mobile)
-  document.addEventListener('click', function(e) {
-    if (
-      !sidebar.contains(e.target) &&
-      !hamburgerBtn.contains(e.target) &&
-      window.innerWidth < 768
-    ) {
       hideSidebar();
     }
   });
@@ -157,6 +454,12 @@
     if (window.innerWidth < 768) {
       hideSidebar();
     }
+    
+    // Update active nav item
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    event.target.closest('.nav-item').classList.add('active');
   }
 </script>
 
@@ -165,8 +468,15 @@
 
   function showSection(id) {
     const sections = ['dashboard-section', 'orders-section', 'profile-section'];
-    sections.forEach(sec => document.getElementById(sec).classList.add('hidden'));
-    document.getElementById(`${id}-section`).classList.remove('hidden');
+    sections.forEach(sec => {
+      const section = document.getElementById(sec);
+      section.classList.add('hidden');
+      section.classList.remove('fade-in-up');
+    });
+    
+    const activeSection = document.getElementById(`${id}-section`);
+    activeSection.classList.remove('hidden');
+    setTimeout(() => activeSection.classList.add('fade-in-up'), 10);
 
     if (id === 'orders') fetchOrders();
   }
@@ -176,103 +486,155 @@
     window.location.href = '../login';
   }
 
-async function fetchUserProfile() {
-  const res = await fetch('https://lukumisteress.onrender.com/api/auth/me', {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  if (!res.ok) throw new Error('Unauthorized');
-  const user = await res.json();
-
-  document.getElementById('username').textContent = user.name || 'User';
-  document.getElementById('profile-name').textContent = user.name || 'N/A';
-  document.getElementById('profile-email').textContent = user.email || 'N/A';
-
-  return user;
-}
-async function fetchOrders() {
-  const container = document.getElementById("orders-list");
-  container.innerHTML = `<p class="text-gray-500">Loading orders...</p>`;
-
-  try {
-    const res = await fetch('https://lukumisteress.onrender.com/api/user/orders', {
+  async function fetchUserProfile() {
+    const res = await fetch('https://lukumisteress.onrender.com/api/auth/me', {
       headers: { Authorization: `Bearer ${token}` }
     });
+    if (!res.ok) throw new Error('Unauthorized');
+    const user = await res.json();
 
-    const orders = await res.json();
+    document.getElementById('username').textContent = user.name || 'User';
+    document.getElementById('profile-name').textContent = user.name || 'N/A';
+    document.getElementById('profile-email').textContent = user.email || 'N/A';
 
-    if (!Array.isArray(orders) || orders.length === 0) {
-      container.innerHTML = `<p class="text-gray-500 italic">You haven't placed any orders yet.</p>`;
-      return;
-    }
+    return user;
+  }
 
-    container.innerHTML = '';
+  async function fetchOrders() {
+    const container = document.getElementById("orders-list");
+    container.innerHTML = `
+      <div class="flex justify-center items-center py-12">
+        <div class="spinner"></div>
+      </div>
+    `;
 
-    orders.forEach(order => {
-      const itemsHTML = order.items.map(i => `
-        <div class="flex items-center gap-3 border-b pb-2 mb-2">
-          <img src="${i.image}" class="w-16 h-16 object-cover border rounded" />
-          <div>
-            <p class="font-medium">${i.name}</p>
-            <p class="text-sm text-gray-500">Qty: ${i.quantity}, Size: ${i.size}, Color: ${i.color}</p>
-            <p class="text-sm text-gray-600">Ksh${i.price} × ${i.quantity} = $${(i.price * i.quantity).toFixed(2)}</p>
+    try {
+      const res = await fetch('https://lukumisteress.onrender.com/api/user/orders', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const orders = await res.json();
+
+      if (!Array.isArray(orders) || orders.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12">
+            <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <p class="text-gray-500 text-lg font-medium">No orders yet</p>
+            <p class="text-gray-400 text-sm mt-2">Start shopping to see your orders here</p>
+            <button onclick="window.location.href='https://lukumisteress.iyonicorp.com'" class="mt-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-700 shadow-lg">
+              Start Shopping
+            </button>
           </div>
-        </div>
-      `).join('');
-
-      const status = order.status || 'Pending';
-      const statusColor = {
-        "Pending": "bg-yellow-100 text-yellow-700",
-        "Confirmed": "bg-blue-100 text-blue-700",
-        "Ready for Shipping": "bg-purple-100 text-purple-700",
-        "Shipped": "bg-indigo-100 text-indigo-700",
-        "Delivered": "bg-green-100 text-green-700",
-        "Cancelled": "bg-red-100 text-red-700"
-      }[status] || 'bg-gray-100 text-gray-600';
-
-      const shippingFee = order.shippingFee || 0;
-      const discount = order.discount || 0;
-      const fallbackTotal = order.items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
-      const total = typeof order.totalPrice === 'number' ? order.totalPrice : fallbackTotal;
-
-      const d = order.deliveryAddress || {};
-      const deliveryInfo = `
-        <p class="text-sm text-gray-600 mt-1">📍 <strong>Delivery:</strong> ${d.address || ''}, ${d.city || ''}, ${d.state || ''}, ${d.zip || ''}, ${d.country || ''}</p>
-      `;
-
-      // 🎁 Show special message if Automatic Discount was applied
-      let couponDisplay = '';
-      if (order.coupon) {
-        if (order.coupon.toUpperCase() === "AUTOMATIC DISCOUNT") {
-          couponDisplay = `
-            <p class="text-sm text-blue-700 mt-1 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              ⏳ Automatic Discount Applied (−Ksh${discount.toFixed(2)})
-            </p>`;
-        } else {
-          couponDisplay = `<p class="text-sm text-green-700 mt-1">🎟️ Coupon: ${order.coupon} (−$${discount.toFixed(2)})</p>`;
-        }
+        `;
+        return;
       }
 
-      container.innerHTML += `
-        <div class="border rounded p-4 bg-white shadow-sm mb-5">
-          <p class="font-semibold text-indigo-600 mb-2">🧾 Order placed on ${new Date(order.createdAt).toLocaleString()}</p>
-          ${itemsHTML}
-          ${deliveryInfo}
-          ${couponDisplay}
-          <p class="text-sm text-blue-600 mt-1">🚚 Shipping Fee: Ksh${shippingFee.toFixed(2)}</p>
-          <p class="mt-1"><span class="inline-block px-2 py-1 text-xs rounded ${statusColor}">📦 ${status}</span></p>
-          <p class="mt-2 font-semibold text-gray-800">Total Paid: Ksh${total.toFixed(2)}</p>
+      container.innerHTML = '';
+
+      orders.forEach(order => {
+        const itemsHTML = order.items.map(i => `
+          <div class="flex items-center gap-4 border-b border-gray-100 pb-4 mb-4 last:border-0 last:pb-0 last:mb-0">
+            <img src="${i.image}" class="w-20 h-20 object-cover rounded-xl border-2 border-gray-100 shadow-sm" />
+            <div class="flex-1">
+              <p class="font-semibold text-gray-800">${i.name}</p>
+              <p class="text-sm text-gray-500 mt-1">Qty: ${i.quantity} • Size: ${i.size} • Color: ${i.color}</p>
+              <p class="text-sm font-medium text-indigo-600 mt-1">Ksh${i.price} × ${i.quantity} = Ksh${(i.price * i.quantity).toFixed(2)}</p>
+            </div>
+          </div>
+        `).join('');
+
+        const status = order.status || 'Pending';
+        const statusConfig = {
+          "Pending": { color: "bg-yellow-100 text-yellow-700 border-yellow-200", icon: "⏳" },
+          "Confirmed": { color: "bg-blue-100 text-blue-700 border-blue-200", icon: "✓" },
+          "Ready for Shipping": { color: "bg-purple-100 text-purple-700 border-purple-200", icon: "📦" },
+          "Shipped": { color: "bg-indigo-100 text-indigo-700 border-indigo-200", icon: "🚚" },
+          "Delivered": { color: "bg-green-100 text-green-700 border-green-200", icon: "✓" },
+          "Cancelled": { color: "bg-red-100 text-red-700 border-red-200", icon: "✗" }
+        };
+        const statusStyle = statusConfig[status] || { color: 'bg-gray-100 text-gray-600 border-gray-200', icon: '•' };
+
+        const shippingFee = order.shippingFee || 0;
+        const discount = order.discount || 0;
+        const fallbackTotal = order.items.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+        const total = typeof order.totalPrice === 'number' ? order.totalPrice : fallbackTotal;
+
+        const d = order.deliveryAddress || {};
+        const deliveryInfo = `
+          <div class="bg-gray-50 rounded-xl p-4 mt-4">
+            <p class="text-sm font-medium text-gray-700 mb-2">📍 Delivery Address</p>
+            <p class="text-sm text-gray-600">${d.address || ''}, ${d.city || ''}, ${d.state || ''}, ${d.zip || ''}, ${d.country || ''}</p>
+          </div>
+        `;
+
+        let couponDisplay = '';
+        if (order.coupon) {
+          if (order.coupon.toUpperCase() === "AUTOMATIC DISCOUNT") {
+            couponDisplay = `
+              <div class="flex items-center gap-2 text-sm text-blue-600 bg-blue-50 px-3 py-2 rounded-lg">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Automatic Discount Applied (−Ksh${discount.toFixed(2)})
+              </div>
+            `;
+          } else {
+            couponDisplay = `
+              <div class="flex items-center gap-2 text-sm text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+                🎟️ Coupon: ${order.coupon} (−Ksh${discount.toFixed(2)})
+              </div>
+            `;
+          }
+        }
+
+        container.innerHTML += `
+          <div class="order-card glass rounded-2xl p-6 shadow-lg mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <p class="font-semibold text-gray-600 text-sm">🧾 ${new Date(order.createdAt).toLocaleString()}</p>
+              <span class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl border-2 ${statusStyle.color}">
+                ${statusStyle.icon} ${status}
+              </span>
+            </div>
+            
+            <div class="mb-4">
+              ${itemsHTML}
+            </div>
+            
+            ${deliveryInfo}
+            
+            <div class="flex flex-wrap gap-3 mt-4">
+              ${couponDisplay}
+              <div class="flex items-center gap-2 text-sm text-blue-600 bg-blue-50 px-3 py-2 rounded-lg">
+                🚚 Shipping: Ksh${shippingFee.toFixed(2)}
+              </div>
+            </div>
+            
+            <div class="mt-6 pt-4 border-t-2 border-gray-100">
+              <div class="flex items-center justify-between">
+                <span class="text-gray-600 font-medium">Total Paid</span>
+                <span class="text-2xl font-bold gradient-text">Ksh${total.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+    } catch (err) {
+      console.error('Order fetch error:', err);
+      container.innerHTML = `
+        <div class="text-center py-12">
+          <svg class="w-24 h-24 mx-auto text-red-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <p class="text-red-500 text-lg font-medium">Failed to load orders</p>
+          <p class="text-gray-400 text-sm mt-2">Please try again later</p>
         </div>
       `;
-    });
-
-  } catch (err) {
-    console.error('Order fetch error:', err);
-    container.innerHTML = `<p class="text-red-500">Failed to load your orders.</p>`;
+    }
   }
-}
+
   window.addEventListener('DOMContentLoaded', async () => {
     if (!token) return (window.location.href = 'https://lukumisteress.iyonicorp.com/login');
 
@@ -287,297 +649,345 @@ async function fetchOrders() {
     }
   });
 </script>
+
 <script>
-async function fetchUserOrdersAndStats() {
-  const token = localStorage.getItem("token");
-  if (!token) return;
+  async function fetchUserOrdersAndStats() {
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-  try {
-    const res = await fetch('https://lukumisteress.onrender.com/api/user/orders', {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const orders = await res.json();
+    try {
+      const res = await fetch('https://lukumisteress.onrender.com/api/user/orders', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const orders = await res.json();
 
-    // Update total orders
-    document.getElementById("total-orders").textContent = orders.length;
+      // Update total orders
+      document.getElementById("total-orders").textContent = orders.length;
 
-    // Calculate total spent
-    const totalSpent = orders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
-    document.getElementById("total-spent").textContent = totalSpent.toFixed(2);
+      // Calculate total spent
+      const totalSpent = orders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
+      document.getElementById("total-spent").textContent = totalSpent.toFixed(2);
 
-    // Chart: Orders Over Time with custom tooltip
-    const ctx = document.getElementById('spendingChart').getContext('2d');
+      // Chart: Orders Over Time
+      const ctx = document.getElementById('spendingChart').getContext('2d');
 
-    // Sort orders by time
-    const sortedOrders = orders.slice().sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      // Sort orders by time
+      const sortedOrders = orders.slice().sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 
-    // Prepare chart data
-    const labels = [];
-    const dataPoints = [];
+      // Prepare chart data
+      const labels = [];
+      const dataPoints = [];
 
-    sortedOrders.forEach(order => {
-      const orderTime = new Date(order.createdAt);
-      const timeLabel = orderTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const total = order.totalPrice || 0;
-      const firstItem = order.items[0] || {};
+      sortedOrders.forEach(order => {
+        const orderTime = new Date(order.createdAt);
+        const timeLabel = orderTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const total = order.totalPrice || 0;
+        const firstItem = order.items[0] || {};
 
-      dataPoints.push({
-        x: timeLabel,
-        y: total,
-        name: firstItem.name || 'Product',
-        image: firstItem.image || '',
-        price: firstItem.price || 0,
-        paymentMethod: order.paymentMethod || 'N/A',
-        isFullyPaid: order.isFullyPaid,
-        isDeliveryFeePaid: order.isDeliveryFeePaid
+        dataPoints.push({
+          x: timeLabel,
+          y: total,
+          name: firstItem.name || 'Product',
+          image: firstItem.image || '',
+          price: firstItem.price || 0,
+          paymentMethod: order.paymentMethod || 'N/A',
+          isFullyPaid: order.isFullyPaid,
+          isDeliveryFeePaid: order.isDeliveryFeePaid
+        });
+
+        labels.push(timeLabel);
       });
 
-      labels.push(timeLabel);
-    });
-
-    // Render chart
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Orders Over Time',
-          data: dataPoints,
-          parsing: {
-            xAxisKey: 'x',
-            yAxisKey: 'y'
-          },
-          fill: true,
-          backgroundColor: 'rgba(96, 165, 250, 0.2)',
-          borderColor: '#3b82f6',
-          tension: 0.4,
-          pointRadius: 5,
-          pointHoverRadius: 7
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          tooltip: {
-            enabled: false,
-            external: function (context) {
-              const tooltipEl = getOrCreateTooltip(context.chart);
-              const tooltipModel = context.tooltip;
-
-              if (tooltipModel.opacity === 0) {
-                tooltipEl.style.opacity = 0;
-                return;
-              }
-
-              const point = tooltipModel.dataPoints[0];
-              const item = point.raw;
-
-              tooltipEl.innerHTML = `
-                <div class="bg-white shadow-md rounded-lg p-3 max-w-xs text-sm">
-                  <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-contain mx-auto mb-2 rounded border">
-                  <p class="text-center font-semibold">${item.name}</p>
-                  <p class="text-center text-indigo-600 font-bold">Ksh${item.price}</p>
-                  <p class="text-xs text-center text-gray-500 mt-1">${item.x}</p>
-                  <hr class="my-2">
-                  <p class="text-center text-gray-600">
-                    🧾 ${item.paymentMethod === 'pay-on-delivery' ? '<span class="text-yellow-600">Pay on Delivery</span>' : '<span class="text-green-700">Paid Online</span>'}
-                  </p>
-                  <p class="text-center ${item.isFullyPaid ? 'text-green-700' : 'text-orange-500'}">
-                    💰 Fully Paid: ${item.isFullyPaid ? 'Yes' : 'No'}
-                  </p>
-                  <p class="text-center ${item.isDeliveryFeePaid ? 'text-green-700' : 'text-red-600'}">
-                    🚚 Delivery Fee Paid: ${item.isDeliveryFeePaid ? 'Yes' : 'No'}
-                  </p>
-                </div>
-              `;
-
-              const { offsetLeft: posX, offsetTop: posY } = context.chart.canvas;
-              tooltipEl.style.left = posX + tooltipModel.caretX + 'px';
-              tooltipEl.style.top = posY + tooltipModel.caretY + 'px';
-              tooltipEl.style.opacity = 1;
-            }
-          },
-          legend: { display: false }
-        },
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Time of Day'
-            }
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Amount Spent (Ksh)'
+      // Render chart
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Amount Spent (Ksh)',
+            data: dataPoints,
+            parsing: {
+              xAxisKey: 'x',
+              yAxisKey: 'y'
             },
-            beginAtZero: true
+            fill: true,
+            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+            borderColor: '#667eea',
+            borderWidth: 3,
+            tension: 0.4,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            pointBackgroundColor: '#667eea',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            pointHoverBackgroundColor: '#764ba2',
+            pointHoverBorderColor: '#fff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            tooltip: {
+              enabled: false,
+              external: function (context) {
+                const tooltipEl = getOrCreateTooltip(context.chart);
+                const tooltipModel = context.tooltip;
+
+                if (tooltipModel.opacity === 0) {
+                  tooltipEl.style.opacity = 0;
+                  return;
+                }
+
+                const point = tooltipModel.dataPoints[0];
+                const item = point.raw;
+
+                tooltipEl.innerHTML = `
+                  <div class="glass rounded-xl p-4 max-w-xs shadow-2xl">
+                    <img src="${item.image}" alt="${item.name}" class="w-24 h-24 object-contain mx-auto mb-3 rounded-lg border-2 border-gray-100">
+                    <p class="text-center font-bold text-gray-800 mb-1">${item.name}</p>
+                    <p class="text-center text-indigo-600 font-bold text-lg mb-2">Ksh${item.price}</p>
+                    <p class="text-xs text-center text-gray-500 mb-3">${item.x}</p>
+                    <hr class="my-3 border-gray-200">
+                    <div class="space-y-2 text-sm">
+                      <p class="text-center ${item.paymentMethod === 'pay-on-delivery' ? 'text-yellow-600' : 'text-green-600'}">
+                        🧾 ${item.paymentMethod === 'pay-on-delivery' ? 'Pay on Delivery' : 'Paid Online'}
+                      </p>
+                      <p class="text-center ${item.isFullyPaid ? 'text-green-600' : 'text-orange-500'}">
+                        💰 ${item.isFullyPaid ? 'Fully Paid' : 'Payment Pending'}
+                      </p>
+                      <p class="text-center ${item.isDeliveryFeePaid ? 'text-green-600' : 'text-red-500'}">
+                        🚚 ${item.isDeliveryFeePaid ? 'Delivery Fee Paid' : 'Delivery Fee Pending'}
+                      </p>
+                    </div>
+                  </div>
+                `;
+
+                const { offsetLeft: posX, offsetTop: posY } = context.chart.canvas;
+                tooltipEl.style.left = posX + tooltipModel.caretX + 'px';
+                tooltipEl.style.top = posY + tooltipModel.caretY + 'px';
+                tooltipEl.style.opacity = 1;
+              }
+            },
+            legend: { 
+              display: false 
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                font: {
+                  size: 12,
+                  weight: '500'
+                },
+                color: '#6b7280'
+              },
+              title: {
+                display: true,
+                text: 'Time of Day',
+                font: {
+                  size: 14,
+                  weight: '600'
+                },
+                color: '#374151'
+              }
+            },
+            y: {
+              grid: {
+                color: 'rgba(0, 0, 0, 0.05)'
+              },
+              ticks: {
+                font: {
+                  size: 12,
+                  weight: '500'
+                },
+                color: '#6b7280',
+                callback: function(value) {
+                  return 'Ksh' + value;
+                }
+              },
+              title: {
+                display: true,
+                text: 'Amount Spent (Ksh)',
+                font: {
+                  size: 14,
+                  weight: '600'
+                },
+                color: '#374151'
+              },
+              beginAtZero: true
+            }
           }
         }
-      }
-    });
+      });
 
-    // Helper: Create Tooltip Container
-    function getOrCreateTooltip(chart) {
-      let tooltipEl = chart.canvas.parentNode.querySelector('div.custom-tooltip');
-      if (!tooltipEl) {
-        tooltipEl = document.createElement('div');
-        tooltipEl.classList.add('custom-tooltip');
-        tooltipEl.style.position = 'absolute';
-        tooltipEl.style.pointerEvents = 'none';
-        tooltipEl.style.transition = 'all .1s ease';
-        chart.canvas.parentNode.appendChild(tooltipEl);
+      // Helper: Create Tooltip Container
+      function getOrCreateTooltip(chart) {
+        let tooltipEl = chart.canvas.parentNode.querySelector('div.custom-tooltip');
+        if (!tooltipEl) {
+          tooltipEl = document.createElement('div');
+          tooltipEl.classList.add('custom-tooltip');
+          tooltipEl.style.position = 'absolute';
+          tooltipEl.style.pointerEvents = 'none';
+          tooltipEl.style.transition = 'all .2s ease';
+          tooltipEl.style.zIndex = '9999';
+          chart.canvas.parentNode.appendChild(tooltipEl);
+        }
+        return tooltipEl;
       }
-      return tooltipEl;
+
+    } catch (err) {
+      console.error("Order fetch error:", err);
     }
-
-  } catch (err) {
-    console.error("Order fetch error:", err);
   }
-}
 
-window.addEventListener('DOMContentLoaded', () => {
-  fetchUserOrdersAndStats();
-});
+  window.addEventListener('DOMContentLoaded', () => {
+    fetchUserOrdersAndStats();
+  });
 </script>
 
 <script>
-function showChangePasswordModal() {
-  document.getElementById('change-password-modal').classList.remove('hidden');
-}
-
-function hideChangePasswordModal() {
-  const modal = document.getElementById('change-password-modal');
-  const form = document.getElementById('change-password-form');
-
-  if (modal) modal.classList.add('hidden');
-  if (form) form.reset();
-}
-
-document.getElementById('change-password-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const currentPassword = document.querySelector("[name='currentPassword']")?.value.trim();
-  const newPassword = document.querySelector("[name='newPassword']")?.value.trim();
-  const confirmPassword = document.querySelector("[name='confirmPassword']")?.value.trim();
-
-  if (!currentPassword || !newPassword || !confirmPassword) {
-    alert("All fields are required.");
-    return;
+  function showChangePasswordModal() {
+    document.getElementById('change-password-modal').classList.remove('hidden');
   }
 
-  if (newPassword !== confirmPassword) {
-    alert("Passwords do not match!");
-    return;
+  function hideChangePasswordModal() {
+    const modal = document.getElementById('change-password-modal');
+    const form = document.getElementById('change-password-form');
+
+    if (modal) modal.classList.add('hidden');
+    if (form) form.reset();
   }
 
-  try {
-    const res = await fetch('https://lukumisteress.onrender.com/api/auth/change-password', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ currentPassword, newPassword })
-    });
+  document.getElementById('change-password-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-    const data = await res.json().catch(() => ({}));
+    const currentPassword = document.querySelector("[name='currentPassword']")?.value.trim();
+    const newPassword = document.querySelector("[name='newPassword']")?.value.trim();
+    const confirmPassword = document.querySelector("[name='confirmPassword']")?.value.trim();
 
-    if (res.ok) {
-      alert(data.message || '✅ Password changed successfully!');
-      hideChangePasswordModal();
-    } else {
-      alert(data.message || '❌ Failed to change password.');
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      alert("All fields are required.");
+      return;
     }
-  } catch (err) {
-    console.error('Change password error:', err);
-    alert('⚠️ Something went wrong. Please try again.');
-  }
-});</script>
+
+    if (newPassword !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const res = await fetch('https://lukumisteress.onrender.com/api/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        alert(data.message || '✅ Password changed successfully!');
+        hideChangePasswordModal();
+      } else {
+        alert(data.message || '❌ Failed to change password.');
+      }
+    } catch (err) {
+      console.error('Change password error:', err);
+      alert('⚠️ Something went wrong. Please try again.');
+    }
+  });
+</script>
+
 <script>
-    setInterval(() => {
+  setInterval(() => {
+    console.clear();
+  }, 100);
+
+  (function() {
+    const devtools = /./;
+    devtools.toString = function() {
       console.clear();
-    }, 100);
-  
-    (function() {
-      const devtools = /./;
-      devtools.toString = function() {
-        console.clear();
-        console.log("DevTools detection activated!");
-        return "";
-      };
-      console.log("%c", devtools);
-    })();
-  </script>
+      console.log("DevTools detection activated!");
+      return "";
+    };
+    console.log("%c", devtools);
+  })();
+</script>
 
 <script>
   (function() {
-     // 🔥 Disable Right-Click
-     document.addEventListener("contextmenu", function(event) {
-       event.preventDefault();
-     });
- 
-     // 🔒 Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-     document.addEventListener("keydown", function(event) {
-       if (event.keyCode == 123) { // F12
-         event.preventDefault();
-       }
-       if (event.ctrlKey && event.shiftKey && (event.keyCode == 73 || event.keyCode == 74)) { // Ctrl+Shift+I / J
-         event.preventDefault();
-       }
-       if (event.ctrlKey && event.keyCode == 85) { // Ctrl+U
-         event.preventDefault();
-       }
-     });
- 
-     // 🚨 Detect DevTools Opened
-     function detectDevTools() {
-       let devtoolsOpen = false;
- 
-       const before = new Date();
-       debugger;
-       const after = new Date();
- 
-       if (after - before > 100) {
-         devtoolsOpen = true;
-       }
- 
-       if (devtoolsOpen) {
-         document.body.innerHTML = `<div style="text-align:center; font-size:24px; font-weight:bold; color:red; margin-top:50px;">
-           🚨 ERROR: DevTools Detected! Please close DevTools to access this website. 🚨
-         </div>`;
-       }
-     }
- 
-     setInterval(detectDevTools, 1000);
-         // ❌ Prevent XSS Attacks (Sanitize Input Fields)
-         document.querySelectorAll("input, textarea").forEach((element) => {
-       element.addEventListener("input", function() {
-         this.value = this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-       });
-     });
- 
-     // 🌍 Detect VPN or Proxy Usage
-     async function detectVPN() {
-       try {
-         const response = await fetch("https://vpnapi.io/api/?key=564239f58fd7438d8cbbbb1c0960ff07");
-         const data = await response.json();
- 
-         if (data.security.vpn || data.security.proxy || data.security.tor) {
-           document.body.innerHTML = `<div style="text-align:center; font-size:24px; font-weight:bold; color:red; margin-top:50px;">
-             🚨 ERROR: VPN/Proxy Detected! Please disable VPN to access this website. 🚨
-           </div>`;
-         }
-       } catch (error) {
-         console.log("VPN detection error:", error);
-       }
-     }
- 
-     detectVPN();
- 
-   })();
- </script>
+    // 🔥 Disable Right-Click
+    document.addEventListener("contextmenu", function(event) {
+      event.preventDefault();
+    });
 
+    // 🔒 Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    document.addEventListener("keydown", function(event) {
+      if (event.keyCode == 123) { // F12
+        event.preventDefault();
+      }
+      if (event.ctrlKey && event.shiftKey && (event.keyCode == 73 || event.keyCode == 74)) { // Ctrl+Shift+I / J
+        event.preventDefault();
+      }
+      if (event.ctrlKey && event.keyCode == 85) { // Ctrl+U
+        event.preventDefault();
+      }
+    });
+
+    // 🚨 Detect DevTools Opened
+    function detectDevTools() {
+      let devtoolsOpen = false;
+
+      const before = new Date();
+      debugger;
+      const after = new Date();
+
+      if (after - before > 100) {
+        devtoolsOpen = true;
+      }
+
+      if (devtoolsOpen) {
+        document.body.innerHTML = `<div style="text-align:center; font-size:24px; font-weight:bold; color:red; margin-top:50px;">
+          🚨 ERROR: DevTools Detected! Please close DevTools to access this website. 🚨
+        </div>`;
+      }
+    }
+
+    setInterval(detectDevTools, 1000);
+
+    // ❌ Prevent XSS Attacks (Sanitize Input Fields)
+    document.querySelectorAll("input, textarea").forEach((element) => {
+      element.addEventListener("input", function() {
+        this.value = this.value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      });
+    });
+
+    // 🌍 Detect VPN or Proxy Usage
+    async function detectVPN() {
+      try {
+        const response = await fetch("https://vpnapi.io/api/?key=564239f58fd7438d8cbbbb1c0960ff07");
+        const data = await response.json();
+
+        if (data.security.vpn || data.security.proxy || data.security.tor) {
+          document.body.innerHTML = `<div style="text-align:center; font-size:24px; font-weight:bold; color:red; margin-top:50px;">
+            🚨 ERROR: VPN/Proxy Detected! Please disable VPN to access this website. 🚨
+          </div>`;
+        }
+      } catch (error) {
+        console.log("VPN detection error:", error);
+      }
+    }
+
+    detectVPN();
+
+  })();
+</script>
 
 </body>
 </html>
