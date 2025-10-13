@@ -244,9 +244,9 @@ async function renderCartSummary() {
   progressBar.setAttribute('aria-valuenow', percent);
 
   // Milestone handling
-  if (hasUsedAutomaticDiscount || total < 10000) {
+  if (!hasUsedAutomaticDiscount) {
     discountSection.style.display = "block";
-    if (total >= 350 && !hasUsedAutomaticDiscount) {
+    if (total >= 10000) {
       milestoneMsg.innerHTML = `<span class="text-green-600 font-semibold">🎉 You've reached Ksh10000! Applying "AUTOMATIC DISCOUNT".</span>`;
       applyAutomaticDiscount();
     } else {
