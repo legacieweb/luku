@@ -28,10 +28,16 @@ const products = [
       "https://i.imgur.com/cKU1qs7.jpeg"
     ],
     colors: ["white", "black"],
-    sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+    trending: true,
+    premium: false,
+    exclusive: false,
+    limited: false,
+    sale: false,
+    offer: false
   },
   {
-    id: "PMA-2025-002",
+    id: "PMA-2026-002",
     category: "sneakers",
     name: "Puma",
     price: 3500,
@@ -48,10 +54,16 @@ const products = [
 
     ],
     colors: ["black", "white"],
-    sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+    trending: false,
+    premium: true,
+    exclusive: false,
+    limited: false,
+    sale: false,
+    offer: true
   },
   {
-    id: "WED-2025-005",
+    id: "WED-2026-005",
     category: "wedges",
     name: "Zara Wedge Platforms",
     price: 2500,
@@ -71,10 +83,16 @@ const products = [
       "https://i.imgur.com/Mqzqimm.jpeg"
     ],
     colors: ["black","blue", "brown","red"],
-    sizes: [7, 8, 9, 10, 11]
+    sizes: [7, 8, 9, 10, 11],
+    trending: false,
+    premium: false,
+    exclusive: true,
+    limited: false,
+    sale: false,
+    offer: false
   },
   {
-    id: "PMP-2025-008",
+    id: "vnw-2026-001",
     category: "rubbers",
     name: "Vans Rubber Shoes",
     price: 2200,
@@ -93,7 +111,13 @@ const products = [
       'https://i.imgur.com/lGL3jwo.jpeg'
     ],
     colors: ["white", "blue", "yellow", "red", "pink"],
-    sizes: [6, 7, 8, 9, 10]
+    sizes: [6, 7, 8, 9, 10],
+    trending: false,
+    premium: false,
+    exclusive: false,
+    limited: true,
+    sale: false,
+    offer: true
   },
   {
     id: "lct-2025-008",
@@ -112,7 +136,13 @@ const products = [
       "https://i.imgur.com/moOofAn.jpeg"
     ],
     colors: ["black"],
-    sizes: [9, 10, 11, 12, 13,14]
+    sizes: [9, 10, 11, 12, 13,14],
+    trending: true,
+    premium: true,
+    exclusive: false,
+    limited: false,
+    sale: false,
+    offer: false
   },
   {
     id: "ytu-2025-009",
@@ -133,10 +163,16 @@ const products = [
       "https://i.imgur.com/rK8rrp8.jpeg"
     ],
     colors: ["amber", "white", "black","rose"],
-    sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+    trending: false,
+    premium: false,
+    exclusive: false,
+    limited: false,
+    sale: true,
+    offer: false
   },
   {
-    id: "SEL-2025-015",
+    id: "vnw-2026-015",
     category: "rubbers",
     name: "Vans Double Color Block",
     price: 2200,
@@ -155,7 +191,13 @@ const products = [
       "https://i.imgur.com/Ft1Yz5o.jpeg"
     ],
     colors: ["blue", "red", "brown","black"],
-    sizes: [6, 7, 8, 9, 10]
+    sizes: [6, 7, 8, 9, 10],
+    trending: true,
+    premium: false,
+    exclusive: false,
+    limited: true,
+    sale: false,
+    offer: false
   },
   {
     id: "AdST-2025-016",
@@ -176,7 +218,13 @@ const products = [
       "https://i.imgur.com/DluQiof.jpeg"
     ],
     colors: ["white", "black","pink","green"],
-    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14],
+    trending: false,
+    premium: true,
+    exclusive: false,
+    limited: false,
+    sale: false,
+    offer: false
   },
 
   {
@@ -198,7 +246,13 @@ const products = [
       "https://i.imgur.com/hZ0Ul1Q.jpeg"
     ],
     colors: ["black", "blue", "green"],
-    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14],
+    trending: false,
+    premium: true,
+    exclusive: true,
+    limited: false,
+    sale: false,
+    offer: false
   },
   {
     id: "NKWBW-2025-025",
@@ -219,10 +273,16 @@ const products = [
       "https://i.imgur.com/SYpJbFd.jpeg"
     ],
     colors: ["black"],
-    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14],
+    trending: true,
+    premium: false,
+    exclusive: false,
+    limited: false,
+    sale: true,
+    offer: false
   },
   {
-    id: "NKsl-2025-025",
+    id: "ADAS-2026-025",
     category: "slides",
     name: "Adidas slides",
     price: 2000,
@@ -243,7 +303,7 @@ const products = [
     sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
   },
   {
-    id: "air95-2025-01",
+    id: "air95-2026-01",
     category: "sneakers",
     name: "Airmax 95",
     price: 4000,
@@ -281,7 +341,7 @@ const products = [
   sizes: [9, 10, 11, 12, 13, 14]
 },
   {
-    id: "NKsl-2025-025",
+    id: "ADAS-2026-026",
     category: "slides",
     name: "Adidas Cool slides",
     price: 2000,
@@ -445,12 +505,96 @@ const products = [
   ],
   colors: ["white"],
   sizes: [6, 7, 8, 9, 10, 11]
-}
+},
+  {
+    id: "vnw-2025-008",
+    category: "rubbers",
+    name: "Vans off the Wall",
+    price: 2200,
+    description: "Classic Vans-inspired rubber shoes with a sleek silhouette and comfortable sole for all-day style.",
+    details: [
+      "Durable canvas upper with signature Vans look",
+      "Vulcanized rubber sole for grip and flexibility",
+      "Cushioned insole for comfort",
+      "Versatile for casual wear, skateboarding, or street style"
+    ],
+    images: [
+      "https://i.imgur.com/yOv3ZUU.jpeg",
+      'https://i.imgur.com/L4ng0YF.jpeg',
+      'https://i.imgur.com/bJlxpCP.jpeg'
+
+    ],
+    colors: ["grey","brown" ,"black"],
+    sizes: [6, 7, 8, 9, 10]
+  },
+
+  {
+    id: "vnw-2026-009",
+    category: "rubbers",
+    name: "Vans off the Wall",
+    price: 2200,
+    description: "Classic Vans-inspired rubber shoes with a sleek silhouette and comfortable sole for all-day style.",
+    details: [
+      "Durable canvas upper with signature Vans look",
+      "Vulcanized rubber sole for grip and flexibility",
+      "Cushioned insole for comfort",
+      "Versatile for casual wear, skateboarding, or street style"
+    ],
+    images: [
+      "https://i.imgur.com/G0ATyFD.jpeg",
+      'https://i.imgur.com/hMmIf9U.jpeg',
+      'https://i.imgur.com/bJlxpCP.jpeg'
+
+    ],
+    colors: ["grey","brown" ,"red"],
+    sizes: [6, 7, 8, 9, 10]
+  },
 
 
+ {
+    id: "vnw-2026-010",
+    category: "rubbers",
+    name: "Exclusive Vans",
+    price: 2200,
+    description: "Classic Vans-inspired rubber shoes with a sleek silhouette and comfortable sole for all-day style.",
+    details: [
+      "Durable canvas upper with signature Vans look",
+      "Vulcanized rubber sole for grip and flexibility",
+      "Cushioned insole for comfort",
+      "Versatile for casual wear, skateboarding, or street style"
+    ],
+    images: [
+      "https://i.imgur.com/3bYuU9a.jpeg",
+      'https://i.imgur.com/OePQW8g.jpeg',
+      'https://i.imgur.com/hoBn1Nr.jpeg'
 
+    ],
+    colors: ["red","grey" ,"black"],
+    sizes: [6, 7, 8, 9, 10]
+  },
+ {
+    id: "vnw-2026-011",
+    category: "rubbers",
+    name: "Vans",
+    price: 2200,
+    description: "Classic Vans-inspired rubber shoes with a sleek silhouette and comfortable sole for all-day style.",
+    details: [
+      "Durable canvas upper with signature Vans look",
+      "Vulcanized rubber sole for grip and flexibility",
+      "Cushioned insole for comfort",
+      "Versatile for casual wear, skateboarding, or street style"
+    ],
+    images: [
+      "https://i.imgur.com/zhfl360.jpeg",
+      'https://i.imgur.com/ZpwmOyp.jpeg',
+      'https://i.imgur.com/PDrrYLI.jpeg',
+      'https://i.imgur.com/Q5aKYhP.jpeg',
+      'https://i.imgur.com/G4u01dW.jpeg'
 
-
+    ],
+    colors: ["white","grey" ,"yellow", "red", "black"],
+    sizes: [6, 7, 8, 9, 10]
+  }
 ];
 
 

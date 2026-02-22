@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>lukumisteress | Affordable Shoes for All Genders in Kenya</title>
   <meta name="description" content="lukumisteress is Kenya's affordable online shoe store for all genders. Shop quality sneakers, heels, sandals, boots, and more at unbeatable prices.">
-  <meta name="keywords" content="lukumisteress, shoes, Kenya, affordable, sneakers, heels, sandals, boots, wedges, slippers, rubbers, slides, all gender, online store">
-  <meta name="author" content="lukumisteress">
+<meta name="keywords" content="Lukumisteress, Lukumisteress Kenya, Lukumisteress shoes, Lukumisteress online store, affordable shoes Kenya, sneakers Kenya, stylish heels, trendy sandals, boots for men and women, wedges Kenya, slippers online, rubber shoes, slides Kenya, unisex footwear, fashion shoes Kenya, buy shoes online Kenya, best shoe deals Kenya, quality shoes Kenya, Lukumisteress footwear collection">  <meta name="author" content="lukumisteress">
   <meta property="og:title" content="lukumisteress | Affordable Shoes for All Genders in Kenya">
   <meta property="og:description" content="Shop affordable and stylish shoes for everyone in Kenya. Sneakers, heels, sandals, boots, and more.">
   <meta property="og:url" content="https://lukumisteress.iyonicorp.com">
@@ -48,6 +47,154 @@
 
   .dropdown-animate {
     animation: dropdown-fade 0.3s ease-out forwards;
+  }
+
+  @keyframes spin-loader {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse-loader {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .loader-spin {
+    animation: spin-loader 1.2s linear infinite;
+  }
+
+  .loader-pulse {
+    animation: pulse-loader 1.5s ease-in-out infinite;
+  }
+
+  .product-skeleton {
+    background: linear-gradient(90deg, #fce7f3 25%, #fbcfe8 50%, #fce7f3 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+
+  @keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .float-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes showText {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    20% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    80% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes pixiDust {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--tx, 0), var(--ty, 0)) scale(0);
+    }
+  }
+
+  .pixi-text {
+    position: fixed;
+    pointer-events: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ec4899;
+    animation: showText 1.8s ease-out forwards;
+    z-index: 100;
+  }
+
+  .pixi-dust {
+    position: fixed;
+    pointer-events: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ec4899;
+    animation: pixiDust 1.6s ease-out forwards;
+  }
+
+  .draggable-btn {
+    cursor: grab;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .draggable-btn:active {
+    cursor: grabbing;
+  }
+
+  .draggable-btn.dragging {
+    box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4);
+  }
+
+  .badge {
+    position: absolute;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    z-index: 10;
+  }
+
+  .badge-trending {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e72);
+    top: 8px;
+    left: 8px;
+  }
+
+  .badge-premium {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    top: 8px;
+    right: 8px;
+  }
+
+  .badge-exclusive {
+    background: linear-gradient(135deg, #9b59b6, #c44569);
+    top: 8px;
+    right: 8px;
+  }
+
+  .badge-limited {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    top: 8px;
+    right: 8px;
+  }
+
+  .badge-sale {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    top: 8px;
+    right: 8px;
+  }
+
+  .badge-offer {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    bottom: 8px;
+    left: 8px;
   }
 </style>
 
@@ -283,36 +430,68 @@
 <!-- Product Section -->
 <section id="products" class="py-16 w-full">
   <h2 class="text-3xl font-bold text-center mb-12">All Shoes</h2>
+  
+  <!-- Preloader -->
+  <div id="productPreloader" class="flex justify-center items-center py-20">
+    <div class="text-center">
+      <div class="w-12 h-12 mx-auto mb-4">
+        <div class="w-12 h-12 border-4 border-pink-200 border-t-pink-600 rounded-full loader-spin"></div>
+      </div>
+      <p class="text-gray-600 font-medium">Loading products...</p>
+    </div>
+  </div>
+  
+  <!-- Product List -->
   <div id="product-list" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 px-4 sm:px-6"></div>
 </section>
 
   <script>
     let products = [];
 
+    function hidePreloader() {
+      const preloader = document.getElementById("productPreloader");
+      if (preloader) {
+        preloader.style.display = "none";
+      }
+    }
+
+    function renderProducts() {
+      const container = document.getElementById("product-list");
+      container.innerHTML = '';
+      products.forEach(product => {
+        let badgesHtml = '';
+        
+        if (product.trending) badgesHtml += '<div class="badge badge-trending">🔥 Trending</div>';
+        if (product.premium) badgesHtml += '<div class="badge badge-premium">⭐ Premium</div>';
+        if (product.exclusive) badgesHtml += '<div class="badge badge-exclusive">✨ Exclusive</div>';
+        if (product.limited) badgesHtml += '<div class="badge badge-limited">⏰ Limited</div>';
+        if (product.sale) badgesHtml += '<div class="badge badge-sale">🏷️ Sale</div>';
+        if (product.offer) badgesHtml += '<div class="badge badge-offer">🎁 Offer</div>';
+
+        container.innerHTML += `
+          <div class="bg-transparent rounded-lg overflow-hidden hover:shadow-xl transition duration-300 flex flex-col h-[400px]">
+            <a href="./product?id=${product.id}" class="flex items-center justify-center h-[260px] w-full overflow-hidden relative">
+              <img src="${product.images[0]}" alt="${product.name}" class="object-contain h-full w-full" />
+              ${badgesHtml}
+            </a>
+            <div class="p-4 flex-1 flex flex-col">
+              <h3 class="text-lg font-semibold">${product.name}</h3>
+              <p class="text-gray-500 mb-2">ksh${product.price}</p>
+              <a href="./product?id=${product.id}" class="mt-auto block text-center bg-pink-600 text-white py-2 rounded hover:bg-pink-500 transition">View Product</a>
+            </div>
+          </div>
+        `;
+      });
+    }
+
     // Fetch products from API
     fetch('https://lukumisteress.onrender.com/api/products')
       .then(response => response.json())
       .then(data => {
         products = data;
-        // Inject cards
-        const container = document.getElementById("product-list");
-        products.forEach(product => {
-          container.innerHTML += `
-            <div class="bg-transparent rounded-lg overflow-hidden hover:shadow-xl transition duration-300 flex flex-col h-[400px]">
-              <a href="./product?id=${product.id}" class="flex items-center justify-center h-[260px] w-full overflow-hidden">
-                <img src="${product.images[0]}" alt="${product.name}" class="object-contain h-full w-full" />
-              </a>
-              <div class="p-4 flex-1 flex flex-col">
-                <h3 class="text-lg font-semibold">${product.name}</h3>
-                <p class="text-gray-500 mb-2">ksh${product.price}</p>
-                <a href="./product?id=${product.id}" class="mt-auto block text-center bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500">View Product</a>
-              </div>
-            </div>
-          `;
-        });
-
-        // Store all data in localStorage
+        renderProducts();
         localStorage.setItem("shoeProducts", JSON.stringify(products));
+        hidePreloader();
       })
       .catch(error => {
         console.error('Error fetching products:', error);
@@ -320,22 +499,9 @@
         const cached = localStorage.getItem("shoeProducts");
         if (cached) {
           products = JSON.parse(cached);
-          const container = document.getElementById("product-list");
-          products.forEach(product => {
-            container.innerHTML += `
-              <div class="bg-transparent rounded-lg overflow-hidden hover:shadow-xl transition duration-300 flex flex-col h-[400px]">
-                <a href="./product?id=${product.id}" class="flex items-center justify-center h-[260px] w-full overflow-hidden">
-                  <img src="${product.images[0]}" alt="${product.name}" class="object-contain h-full w-full" />
-                </a>
-                <div class="p-4 flex-1 flex flex-col">
-                  <h3 class="text-lg font-semibold">${product.name}</h3>
-                  <p class="text-gray-500 mb-2">ksh${product.price}</p>
-                  <a href="./product?id=${product.id}" class="mt-auto block text-center bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500">View Product</a>
-                </div>
-              </div>
-            `;
-          });
+          renderProducts();
         }
+        hidePreloader();
       });
     
   </script>
@@ -557,116 +723,406 @@ function hideSignupPrompt() {
    })();
  </script>
 
-<!-- Footer -->
-<footer class="bg-gradient-to-r from-pink-50 via-white to-pink-50 text-gray-800 py-16 relative overflow-hidden">
-  <!-- Subtle background pattern -->
-  <div class="absolute inset-0 opacity-5">
-    <div class="absolute top-10 left-10 w-20 h-20 border border-pink-300 rounded-full"></div>
-    <div class="absolute bottom-10 right-10 w-16 h-16 border border-pink-400 rounded-full"></div>
-    <div class="absolute top-1/2 left-1/4 w-12 h-12 bg-pink-200 rounded-full opacity-30"></div>
+<!-- Search Drawer Toggle Button -->
+<button id="searchToggleBtn" class="fixed left-8 top-1/2 transform -translate-y-1/2 z-40 w-14 h-14 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 draggable-btn" style="touch-action: none;">
+  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+  </svg>
+</button>
+
+<!-- Search Drawer -->
+<div id="searchDrawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-out flex flex-col">
+  <!-- Drawer Header -->
+  <div class="flex items-center justify-between p-6 border-b border-gray-200">
+    <h3 class="text-2xl font-bold text-gray-800">Search Products</h3>
+    <button onclick="closeSearchDrawer()" class="text-gray-500 hover:text-gray-700 text-2xl font-bold transition">×</button>
   </div>
 
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <!-- Brand Section -->
-      <div class="col-span-1 md:col-span-2">
-        <div class="flex items-center space-x-3 mb-6">
-          <img src="https://i.imgur.com/NvQLami.png" alt="lukumisteress Logo" class="w-16 h-16 object-contain drop-shadow-lg" />
-          <div>
-            <h3 class="text-2xl font-bold bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">lukumisteress</h3>
-            <p class="text-sm text-pink-400 font-medium">Step into Style</p>
+  <!-- Search Input -->
+  <div class="p-6 border-b border-gray-200">
+    <input 
+      type="text" 
+      id="searchInput" 
+      placeholder="Type product name..." 
+      class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-pink-600 focus:ring-2 focus:ring-pink-200 transition"
+      autocomplete="off"
+    />
+  </div>
+
+  <!-- Search Results -->
+  <div class="flex-1 overflow-y-auto p-6">
+    <div id="searchResults" class="space-y-4">
+      <p class="text-center text-gray-500 py-8">Start typing to search products...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Search Overlay -->
+<div id="searchOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300" onclick="closeSearchDrawer()"></div>
+
+<!-- Footer -->
+<footer class="bg-white text-gray-800 relative overflow-hidden mt-20">
+  <!-- Decorative Top Border -->
+  <div class="h-1 bg-gradient-to-r from-pink-400 via-pink-500 to-rose-500"></div>
+  
+  <div class="relative py-16 sm:py-20 lg:py-24">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-rose-100 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Grid Layout -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        
+        <!-- Brand Section -->
+        <div class="lg:col-span-2">
+          <div class="mb-6">
+            <div class="flex items-center space-x-3 mb-4">
+              <div class="relative">
+                <img src="https://i.imgur.com/NvQLami.png" alt="lukumisteress Logo" class="w-16 h-16 sm:w-20 sm:h-20 object-contain float-animation" />
+              </div>
+              <div>
+                <h2 class="text-3xl sm:text-4xl font-black bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">lukumisteress</h2>
+                <p class="text-pink-600 font-semibold text-sm">Step into Style</p>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600 leading-relaxed mb-6 text-sm sm:text-base">
+            Kenya's premier affordable online shoe store. Discover quality sneakers, heels, sandals, boots, and more at unbeatable prices.
+          </p>
+          <!-- Social Icons -->
+          <div class="flex flex-wrap gap-3">
+            <a href="#" title="Facebook" class="group w-12 h-12 bg-gradient-to-br from-blue-50 to-blue-100 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 hover:from-blue-600 hover:to-blue-700">
+              <svg class="w-6 h-6 text-blue-600 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="#" title="Instagram" class="group w-12 h-12 bg-gradient-to-br from-pink-50 to-rose-100 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 hover:from-pink-500 hover:to-rose-500">
+              <svg class="w-6 h-6 text-pink-600 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.057-1.645.069-4.849.069-3.204 0-3.584-.012-4.849-.069-3.259-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163C8.756 0 8.33.012 7.052.07 2.696.27.273 2.69.073 7.052.012 8.33 0 8.757 0 12s.012 3.67.07 4.948c.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.7.071 4.948.071 3.247 0 3.668-.012 4.948-.07 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.699.073-4.948 0-3.247-.011-3.668-.071-4.948-.196-4.354-2.617-6.78-6.979-6.98C15.668.012 15.259 0 12 0z"/></svg>
+            </a>
+            <a href="#" title="Twitter" class="group w-12 h-12 bg-gradient-to-br from-blue-50 to-sky-100 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 hover:from-sky-400 hover:to-blue-500">
+              <svg class="w-6 h-6 text-sky-500 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 002.856-9.97 10.02 10.02 0 01-2.856.97 4.96 4.96 0 002.165-2.724c-.951.564-2.005.974-3.127 1.195a4.948 4.948 0 00-8.506 4.513A14.025 14.025 0 011.671 3.149a4.947 4.947 0 001.53 6.603 4.917 4.917 0 01-2.242-.616v.06a4.95 4.95 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.95 4.95 0 004.604 3.417A9.868 9.868 0 010 21.54a13.994 13.994 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+            </a>
+            <a href="#" title="TikTok" class="group w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 hover:bg-gray-900">
+              <svg class="w-6 h-6 text-gray-800 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24"><path d="M19.498 3.75c-.522-2.032-2.231-3.621-4.298-3.621-1.227 0-2.324.491-3.126 1.275-.802-.784-1.898-1.275-3.125-1.275-2.067 0-3.776 1.589-4.298 3.621-.057.236-.191.457-.384.625v16.5c0 1.657 1.343 3 3 3s3-1.343 3-3v-8.5c.802 1.008 2.067 1.65 3.5 1.65s2.698-.642 3.5-1.65v8.5c0 1.657 1.343 3 3 3s3-1.343 3-3v-16.5c-.193-.168-.327-.389-.384-.625z"/></svg>
+            </a>
+            <a href="#" title="WhatsApp" class="group w-12 h-12 bg-gradient-to-br from-green-50 to-emerald-100 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-110 hover:from-green-500 hover:to-emerald-600">
+              <svg class="w-6 h-6 text-green-600 group-hover:text-white transition" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-5.031 1.378c-3.055 2.427-3.865 6.95-1.755 10.494 2.11 3.545 6.558 5.143 10.092 3.798 3.534-1.345 5.646-5.18 4.638-8.974-.997-3.855-4.747-6.412-8.574-6.412m8.342 0a.75.75 0 100-1.5.75.75 0 000 1.5"/></svg>
+            </a>
           </div>
         </div>
-        <p class="text-gray-600 mb-6 leading-relaxed">
-          Kenya's premier affordable online shoe store for all genders. Discover quality sneakers, heels, sandals, boots, and more at unbeatable prices. Walk with confidence, step with style.
-        </p>
-        <div class="flex space-x-4">
-          <!-- Facebook -->
-          <a href="#" class="w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            <span class="text-white text-xl font-bold">f</span>
-          </a>
-          <!-- Instagram -->
-          <a href="#" class="w-12 h-12 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:from-pink-600 hover:via-red-600 hover:to-yellow-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl transform hover:-translate-y-1 relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 hover:opacity-20 transition-opacity duration-300"></div>
-            <span class="text-white text-xl relative z-10">📷</span>
-          </a>
-          <!-- Twitter -->
-          <a href="#" class="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            <span class="text-white text-xl">🐦</span>
-          </a>
-          <!-- TikTok -->
-          <a href="#" class="w-12 h-12 bg-gradient-to-r from-black to-gray-800 hover:from-gray-800 hover:to-black rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl transform hover:-translate-y-1 relative">
-            <div class="absolute inset-0 bg-gradient-to-r from-pink-500 to-cyan-500 opacity-0 hover:opacity-30 transition-opacity duration-300 rounded-full"></div>
-            <span class="text-white text-xl relative z-10 font-bold">T</span>
-          </a>
-          <!-- WhatsApp -->
-          <a href="#" class="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            <span class="text-white text-xl">💬</span>
-          </a>
+
+        <!-- Categories -->
+        <div>
+          <h4 class="text-base font-bold text-gray-900 mb-6 relative pb-3 after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-gradient-to-r after:from-pink-500 after:to-rose-500">Shop Categories</h4>
+          <ul class="space-y-2.5">
+            <li><a href="./category?name=sandals" class="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-sm font-medium inline-flex items-center group">
+              <span class="mr-2 transform group-hover:translate-x-1 transition-transform">→</span>Sandals
+            </a></li>
+            <li><a href="./category?name=wedges" class="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-sm font-medium inline-flex items-center group">
+              <span class="mr-2 transform group-hover:translate-x-1 transition-transform">→</span>Wedges
+            </a></li>
+            <li><a href="./category?name=slides" class="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-sm font-medium inline-flex items-center group">
+              <span class="mr-2 transform group-hover:translate-x-1 transition-transform">→</span>Slides
+            </a></li>
+            <li><a href="./category?name=sneakers" class="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-sm font-medium inline-flex items-center group">
+              <span class="mr-2 transform group-hover:translate-x-1 transition-transform">→</span>Sneakers
+            </a></li>
+            <li><a href="./category?name=rubbers" class="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-sm font-medium inline-flex items-center group">
+              <span class="mr-2 transform group-hover:translate-x-1 transition-transform">→</span>Rubbers
+            </a></li>
+          </ul>
+        </div>
+
+        <!-- Legal & Support -->
+        <div>
+          <h4 class="text-base font-bold text-gray-900 mb-6 relative pb-3 after:absolute after:bottom-0 after:left-0 after:w-12 after:h-1 after:bg-gradient-to-r after:from-pink-500 after:to-rose-500">Legal & Support</h4>
+          <ul class="space-y-2.5">
+            <li><a href="./terms" class="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-sm font-medium inline-flex items-center group">
+              <span class="mr-2 transform group-hover:translate-x-1 transition-transform">→</span>Terms of Service
+            </a></li>
+            <li><a href="./privacy" class="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-sm font-medium inline-flex items-center group">
+              <span class="mr-2 transform group-hover:translate-x-1 transition-transform">→</span>Privacy Policy
+            </a></li>
+            <li><a href="./refund" class="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-sm font-medium inline-flex items-center group">
+              <span class="mr-2 transform group-hover:translate-x-1 transition-transform">→</span>Refund Policy
+            </a></li>
+            <li><a href="./shipping" class="text-gray-600 hover:text-pink-600 transition-colors duration-300 text-sm font-medium inline-flex items-center group">
+              <span class="mr-2 transform group-hover:translate-x-1 transition-transform">→</span>Shipping Policy
+            </a></li>
+          </ul>
         </div>
       </div>
 
-      <!-- Quick Links -->
-      <div>
-        <h4 class="text-lg font-semibold mb-6 text-pink-500">Shop Categories</h4>
-        <ul class="space-y-3">
-          <li><a href="./category?name=sandals" class="text-gray-600 hover:text-pink-600 transition-all duration-300 flex items-center group">
-            <span class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity">👡</span>Sandals
-          </a></li>
-          <li><a href="./category?name=wedges" class="text-gray-600 hover:text-pink-600 transition-all duration-300 flex items-center group">
-            <span class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity">👠</span>Wedges
-          </a></li>
-          <li><a href="./category?name=slides" class="text-gray-600 hover:text-pink-600 transition-all duration-300 flex items-center group">
-            <span class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity">🥿</span>Slides
-          </a></li>
-          <li><a href="./category?name=sneakers" class="text-gray-600 hover:text-pink-600 transition-all duration-300 flex items-center group">
-            <span class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity">👟</span>Sneakers
-          </a></li>
-          <li><a href="./category?name=rubbers" class="text-gray-600 hover:text-pink-600 transition-all duration-300 flex items-center group">
-            <span class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity">👢</span>Rubbers
-          </a></li>
-        </ul>
-      </div>
+      <!-- Divider -->
+      <div class="border-t border-gray-200 my-12"></div>
 
-      <!-- Policies -->
-      <div>
-        <h4 class="text-lg font-semibold mb-6 text-pink-500">Legal & Support</h4>
-        <ul class="space-y-3">
-          <li><a href="./terms" class="text-gray-600 hover:text-pink-600 transition-all duration-300 flex items-center group">
-            <span class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity">📋</span>Terms of Service
-          </a></li>
-          <li><a href="./privacy" class="text-gray-600 hover:text-pink-600 transition-all duration-300 flex items-center group">
-            <span class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity">🔒</span>Privacy Policy
-          </a></li>
-          <li><a href="./refund" class="text-gray-600 hover:text-pink-600 transition-all duration-300 flex items-center group">
-            <span class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity">↩️</span>Refund Policy
-          </a></li>
-          <li><a href="./shipping" class="text-gray-600 hover:text-pink-600 transition-all duration-300 flex items-center group">
-            <span class="mr-2 opacity-0 group-hover:opacity-100 transition-opacity">🚚</span>Shipping Policy
-          </a></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Bottom Bar -->
-    <div class="border-t border-pink-200 mt-12 pt-8">
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <p class="text-gray-500 text-sm mb-4 md:mb-0">
-          &copy; 2025 lukumisteress. Crafted with ❤️ in Nairobi, Kenya.
-        </p>
-        <div class="flex items-center space-x-6">
-          <a href="mailto:support@lukumisteress.com" class="text-gray-500 hover:text-pink-500 transition-all duration-300 flex items-center">
-            <span class="mr-2">📧</span>support@lukumisteress.com
+      <!-- Bottom Section -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
+        <div class="text-center sm:text-left">
+          <p class="text-gray-600 text-xs sm:text-sm font-medium">&copy; 2026 <span class="text-pink-600 font-bold">lukumisteress</span>. All rights reserved.</p>
+        </div>
+        <div class="text-center">
+          <p class="text-gray-500 text-xs sm:text-sm">Crafted with 💖 in Nairobi, Kenya</p>
+        </div>
+        <div class="text-center sm:text-right">
+          <a href="mailto:support@lukumisteress.com" class="text-gray-600 hover:text-pink-600 transition-colors text-xs sm:text-sm font-medium inline-flex items-center justify-center sm:justify-end gap-2">
+            <span>📧</span>support@lukumisteress.com
           </a>
-          <span class="text-pink-300">|</span>
-          <span class="text-gray-500 flex items-center">
-            <span class="mr-2">📍</span>Nairobi, Kenya
-          </span>
         </div>
       </div>
     </div>
   </div>
 </footer>
+
+<script>
+  let isDragging = false;
+  let hasMoved = false;
+  let offset = { x: 0, y: 0 };
+  const searchBtn = document.getElementById('searchToggleBtn');
+  const chars = 'lukumisteress'.split('');
+  let charIndex = 0;
+  let dragStartX = 0;
+  let dragStartY = 0;
+
+  function openSearchDrawer() {
+    const drawer = document.getElementById('searchDrawer');
+    const overlay = document.getElementById('searchOverlay');
+    drawer.classList.remove('translate-x-full');
+    overlay.classList.remove('hidden');
+    document.getElementById('searchInput').focus();
+  }
+
+  function closeSearchDrawer() {
+    const drawer = document.getElementById('searchDrawer');
+    const overlay = document.getElementById('searchOverlay');
+    drawer.classList.add('translate-x-full');
+    overlay.classList.add('hidden');
+    document.getElementById('searchInput').value = '';
+    document.getElementById('searchResults').innerHTML = '<p class="text-center text-gray-500 py-8">Start typing to search products...</p>';
+  }
+
+  // Dragging functionality
+  searchBtn.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    hasMoved = false;
+    searchBtn.classList.add('dragging');
+    const rect = searchBtn.getBoundingClientRect();
+    offset.x = e.clientX - rect.left;
+    offset.y = e.clientY - rect.top;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    charIndex = 0;
+    
+    // Show the word "lukumisteress" when dragging starts
+    showBrandName(e.clientX, e.clientY);
+  });
+
+  let lastDragTime = 0;
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    const distanceMoved = Math.sqrt(
+      Math.pow(e.clientX - dragStartX, 2) + 
+      Math.pow(e.clientY - dragStartY, 2)
+    );
+
+    // If moved more than 10 pixels, it's a drag
+    if (distanceMoved > 10) {
+      hasMoved = true;
+    }
+
+    const x = e.clientX - offset.x;
+    const y = e.clientY - offset.y;
+
+    // Edge constraints - only allow dragging at edges
+    const edgeThreshold = 30;
+    const isNearEdge = 
+      x < edgeThreshold || 
+      x > window.innerWidth - 100 ||
+      y < edgeThreshold ||
+      y > window.innerHeight - 100;
+
+    if (isNearEdge && hasMoved) {
+      searchBtn.style.left = Math.max(0, Math.min(x, window.innerWidth - 56)) + 'px';
+      searchBtn.style.top = Math.max(0, Math.min(y, window.innerHeight - 56)) + 'px';
+      searchBtn.style.right = 'auto';
+      searchBtn.style.transform = 'translate(0, 0)';
+
+      // Create word effect every 200ms
+      const now = Date.now();
+      if (now - lastDragTime > 200) {
+        lastDragTime = now;
+        createWordEffect(e.clientX, e.clientY);
+      }
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (isDragging) {
+      isDragging = false;
+      hasMoved = false;
+      searchBtn.classList.remove('dragging');
+    }
+  });
+
+  function getRotationFromDirection(x, y) {
+    const dx = x - dragStartX;
+    const dy = y - dragStartY;
+    
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    
+    // Determine direction and return angle
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // Horizontal drag
+      return dx > 0 ? 0 : 180;
+    } else {
+      // Vertical drag
+      return dy > 0 ? 90 : 270;
+    }
+  }
+
+  function showBrandName(x, y) {
+    const word = 'lukumisteress';
+    const angle = getRotationFromDirection(x, y);
+    
+    // Create vertical text display
+    const textElement = document.createElement('div');
+    textElement.className = 'pixi-text';
+    textElement.style.left = (x - 10) + 'px';
+    textElement.style.top = (y - 50) + 'px';
+    textElement.style.fontSize = '14px';
+    textElement.style.letterSpacing = '8px';
+    textElement.style.transform = `rotate(${angle}deg)`;
+    textElement.style.transformOrigin = 'center center';
+    textElement.style.whiteSpace = 'nowrap';
+    
+    // Add each character on a new line for vertical effect
+    textElement.innerHTML = word.split('').join('<br>');
+    
+    document.body.appendChild(textElement);
+    
+    setTimeout(() => textElement.remove(), 1800);
+  }
+
+  function createWordEffect(x, y) {
+    const word = 'lukumisteress';
+    const angle = getRotationFromDirection(x, y);
+    
+    // First, show the complete word vertically
+    const textElement = document.createElement('div');
+    textElement.className = 'pixi-text';
+    textElement.style.left = (x - 10) + 'px';
+    textElement.style.top = (y - 50) + 'px';
+    textElement.style.fontSize = '14px';
+    textElement.style.letterSpacing = '8px';
+    textElement.style.transform = `rotate(${angle}deg)`;
+    textElement.style.transformOrigin = 'center center';
+    textElement.style.whiteSpace = 'nowrap';
+    
+    textElement.innerHTML = word.split('').join('<br>');
+    
+    document.body.appendChild(textElement);
+    
+    // After a short delay, create dust particles for each character
+    setTimeout(() => {
+      word.split('').forEach((char, index) => {
+        setTimeout(() => {
+          let charX, charY;
+          
+          if (angle === 0) {
+            // Dragging right
+            charX = x + (index * 12);
+            charY = y;
+          } else if (angle === 180) {
+            // Dragging left
+            charX = x - (index * 12);
+            charY = y;
+          } else if (angle === 90) {
+            // Dragging down
+            charX = x;
+            charY = y + (index * 12);
+          } else {
+            // Dragging up
+            charX = x;
+            charY = y - (index * 12);
+          }
+          
+          createPixiDust(charX, charY, char);
+        }, index * 30);
+      });
+      textElement.remove();
+    }, 300);
+    
+    setTimeout(() => textElement.remove(), 1800);
+  }
+
+  function createPixiDust(x, y, char) {
+    const dust = document.createElement('div');
+    dust.className = 'pixi-dust';
+    dust.textContent = char;
+    dust.style.left = x + 'px';
+    dust.style.top = y + 'px';
+    
+    // Random direction
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 60 + Math.random() * 120;
+    const tx = Math.cos(angle) * distance;
+    const ty = Math.sin(angle) * distance;
+    
+    dust.style.setProperty('--tx', tx + 'px');
+    dust.style.setProperty('--ty', ty + 'px');
+    
+    document.body.appendChild(dust);
+    
+    setTimeout(() => dust.remove(), 1600);
+  }
+
+  searchBtn.addEventListener('click', (e) => {
+    // Only open drawer if it was a click, not a drag
+    if (!hasMoved) {
+      openSearchDrawer();
+    }
+  });
+
+  document.getElementById('searchInput').addEventListener('input', function(e) {
+    const query = e.target.value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('searchResults');
+
+    if (!query) {
+      resultsContainer.innerHTML = '<p class="text-center text-gray-500 py-8">Start typing to search products...</p>';
+      return;
+    }
+
+    const filteredProducts = products.filter(product => 
+      product.name.toLowerCase().includes(query)
+    );
+
+    if (filteredProducts.length === 0) {
+      resultsContainer.innerHTML = '<p class="text-center text-gray-500 py-8">No products found. Try a different search.</p>';
+      return;
+    }
+
+    resultsContainer.innerHTML = filteredProducts.map(product => `
+      <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-300 cursor-pointer group" onclick="goToProduct('${product.id}')">
+        <div class="flex gap-3">
+          <img src="${product.images[0]}" alt="${product.name}" class="w-16 h-16 object-contain rounded group-hover:scale-110 transition-transform duration-300" />
+          <div class="flex-1">
+            <h5 class="font-semibold text-gray-900 text-sm group-hover:text-pink-600 transition-colors">${product.name}</h5>
+            <p class="text-pink-600 font-bold text-sm mt-1">ksh${product.price}</p>
+            <p class="text-gray-500 text-xs mt-1">Click to view details</p>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  });
+
+  function goToProduct(productId) {
+    closeSearchDrawer();
+    window.location.href = `./product?id=${productId}`;
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSearchDrawer();
+  });
+</script>
 
 </body>
 </html>

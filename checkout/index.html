@@ -19,6 +19,14 @@
   <meta name="twitter:image" content="https://i.imgur.com/NvQLami.png" />
   <link rel="icon" href="https://i.imgur.com/NvQLami.png" type="image/png" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    window.addEventListener('error', (e) => {
+      if (e.filename && (e.filename.includes('posthog') || e.filename.includes('analytics'))) {
+        e.preventDefault();
+        return false;
+      }
+    });
+  </script>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 <!-- Header -->
@@ -331,20 +339,26 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
     return;
   }
 
-  const name = form.name.value;
-  const email = form.email.value;
-  const phone = form.phone.value;
-  const address = form.address.value;
-  const country = form.country.value;
-  const state = form.state.value;
-  const city = form.city.value;
-  const zip = form.zip.value;
+  const name = form.name.value?.trim();
+  const email = form.email.value?.trim();
+  const phone = form.phone.value?.trim();
+  const address = form.address.value?.trim();
+  const country = form.country.value?.trim();
+  const state = form.state.value?.trim();
+  const city = form.city.value?.trim();
+  const zip = form.zip.value?.trim();
+
+  if (!name || !email || !phone || !address || !country || !state || !city || !zip) {
+    alert("Please fill in all delivery information.");
+    return;
+  }
+
   const couponCode = document.getElementById("coupon-input").value.trim();
   const totalText = document.getElementById("checkout-total").textContent;
   const totalAmount = Math.round(parseFloat(totalText) * 100);
 
-  if (isNaN(totalAmount) || totalAmount < 100) {
-    alert("Invalid total amount.");
+  if (isNaN(totalAmount) || totalAmount < 1) {
+    alert("Invalid total amount. Minimum order is Ksh0.01.");
     return;
   }
 
@@ -360,57 +374,63 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
 
   const deliveryAddress = { name, email, phone, address, country, state, city, zip };
 
-  const handler = PaystackPop.setup({
-    key: 'pk_live_7ab8e015626516d7d00210b2e7fe169805c226b8',
-    email: email,
-    amount: totalAmount,
-    currency: "KES",
-    callback: function (response) {
-      fetch('https://lukumisteress.onrender.com/api/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          items,
-          deliveryAddress,
-          discount,
-          shippingFee,
-          coupon: couponCode || undefined,
-          paymentRef: response.reference
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.order) {
-          localStorage.setItem("lastOrderSummary", JSON.stringify({
+  try {
+    const handler = PaystackPop.setup({
+      key: 'pk_live_7ab8e015626516d7d00210b2e7fe169805c226b8',
+      email: email,
+      amount: totalAmount,
+      currency: "KES",
+      ref: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      callback: function (response) {
+        fetch('https://lukumisteress.onrender.com/api/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
             items,
+            deliveryAddress,
             discount,
             shippingFee,
-            total: items.reduce((sum, i) => sum + i.price * i.quantity, 0)
-          }));
+            coupon: couponCode || undefined,
+            paymentRef: response.reference
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.order) {
+            localStorage.setItem("lastOrderSummary", JSON.stringify({
+              items,
+              discount,
+              shippingFee,
+              total: items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+            }));
 
-          localStorage.removeItem("cart");
-          localStorage.removeItem("buynowItem");
-          localStorage.removeItem("discount");
+            localStorage.removeItem("cart");
+            localStorage.removeItem("buynowItem");
+            localStorage.removeItem("discount");
 
-          window.location.href = "../thankyou";
-        } else {
-          alert(data.message || "⚠️ Order save failed");
-        }
-      })
-      .catch(err => {
-        console.error("Backend error:", err);
-        alert("Something went wrong saving your order.");
-      });
-    },
-    onClose: function () {
-      alert('❌ Payment cancelled.');
-    }
-  });
+            window.location.href = "../thankyou";
+          } else {
+            alert(data.message || "⚠️ Order save failed");
+          }
+        })
+        .catch(err => {
+          console.error("Backend error:", err);
+          alert("Something went wrong saving your order.");
+        });
+      },
+      onClose: function () {
+        alert('❌ Payment cancelled.');
+      }
+    });
 
-  handler.openIframe();
+    handler.openIframe();
+  } catch (err) {
+    console.error("Payment error:", err);
+    alert("Unable to initiate payment. Please try again.");
+  }
 });
 
 function autofillUser() {
@@ -428,7 +448,25 @@ function autofillUser() {
   });
 }
 
-// INIT
+window.setupTransaction = function(totalAmount, email, items, deliveryAddress, couponCode) {
+  try {
+    const handler = PaystackPop.setup({
+      key: 'pk_live_7ab8e015626516d7d00210b2e7fe169805c226b8',
+      email: email,
+      amount: totalAmount,
+      currency: "KES",
+      ref: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      onClose: function () {
+        alert('❌ Payment cancelled.');
+      }
+    });
+    handler.openIframe();
+  } catch (err) {
+    console.error("Paystack initialization error:", err);
+    alert("Payment system unavailable. Please refresh and try again.");
+  }
+};
+
 autofillUser();
 renderCartSummary();
 </script>
@@ -448,17 +486,27 @@ function handlePayOnDelivery() {
     return;
   }
 
-  const name = form.name.value;
-  const email = form.email.value;
-  const phone = form.phone.value;
-  const address = form.address.value;
-  const country = form.country.value;
-  const state = form.state.value;
-  const city = form.city.value;
-  const zip = form.zip.value;
-  const couponCode = document.getElementById("coupon-input").value.trim();
+  const name = form.name.value?.trim();
+  const email = form.email.value?.trim();
+  const phone = form.phone.value?.trim();
+  const address = form.address.value?.trim();
+  const country = form.country.value?.trim();
+  const state = form.state.value?.trim();
+  const city = form.city.value?.trim();
+  const zip = form.zip.value?.trim();
 
+  if (!name || !email || !phone || !address || !country || !state || !city || !zip) {
+    alert("Please fill in all delivery information.");
+    return;
+  }
+
+  const couponCode = document.getElementById("coupon-input").value.trim();
   const deliveryOnlyAmount = Math.round(shippingFee * 100);
+
+  if (isNaN(deliveryOnlyAmount) || deliveryOnlyAmount < 1) {
+    alert("Invalid delivery fee.");
+    return;
+  }
 
   const items = checkoutCart.map(item => ({
     name: item.name,
@@ -472,59 +520,64 @@ function handlePayOnDelivery() {
 
   const deliveryAddress = { name, email, phone, address, country, state, city, zip };
 
-  const handler = PaystackPop.setup({
-    key: 'pk_live_7ab8e015626516d7d00210b2e7fe169805c226b8',
-    email: email,
-    amount: deliveryOnlyAmount,
-    currency: "KES",
-    callback: function (response) {
-      // After paying delivery fee, save the order as "pay-on-delivery"
-      fetch('https://lukumisteress.onrender.com/api/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          items,
-          deliveryAddress,
-          discount,
-          shippingFee,
-          coupon: couponCode || undefined,
-          paymentRef: response.reference,
-          paymentMethod: "pay-on-delivery"  // <-- flag for backend
-        })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.order) {
-          localStorage.setItem("lastOrderSummary", JSON.stringify({
+  try {
+    const handler = PaystackPop.setup({
+      key: 'pk_live_7ab8e015626516d7d00210b2e7fe169805c226b8',
+      email: email,
+      amount: deliveryOnlyAmount,
+      currency: "KES",
+      ref: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      callback: function (response) {
+        fetch('https://lukumisteress.onrender.com/api/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
             items,
+            deliveryAddress,
             discount,
             shippingFee,
-            total: items.reduce((sum, i) => sum + i.price * i.quantity, 0)
-          }));
+            coupon: couponCode || undefined,
+            paymentRef: response.reference,
+            paymentMethod: "pay-on-delivery"
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.order) {
+            localStorage.setItem("lastOrderSummary", JSON.stringify({
+              items,
+              discount,
+              shippingFee,
+              total: items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+            }));
 
-          localStorage.removeItem("cart");
-          localStorage.removeItem("buynowItem");
-          localStorage.removeItem("discount");
+            localStorage.removeItem("cart");
+            localStorage.removeItem("buynowItem");
+            localStorage.removeItem("discount");
 
-          window.location.href = "../thankyou";
-        } else {
-          alert(data.message || "⚠️ Order save failed");
-        }
-      })
-      .catch(err => {
-        console.error("Backend error:", err);
-        alert("Something went wrong saving your order.");
-      });
-    },
-    onClose: function () {
-      alert('❌ Payment for delivery was cancelled.');
-    }
-  });
+            window.location.href = "../thankyou";
+          } else {
+            alert(data.message || "⚠️ Order save failed");
+          }
+        })
+        .catch(err => {
+          console.error("Backend error:", err);
+          alert("Something went wrong saving your order.");
+        });
+      },
+      onClose: function () {
+        alert('❌ Payment for delivery was cancelled.');
+      }
+    });
 
-  handler.openIframe();
+    handler.openIframe();
+  } catch (err) {
+    console.error("Payment error:", err);
+    alert("Unable to initiate payment. Please try again.");
+  }
 }
 async function checkPoDEligibility() {
   const token = localStorage.getItem("token");
