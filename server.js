@@ -29,12 +29,7 @@ const products = [
     ],
     colors: ["white", "black"],
     sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-    trending: true,
-    premium: false,
-    exclusive: false,
-    limited: false,
-    sale: false,
-    offer: false
+    badge: "trending"
   },
   {
     id: "PMA-2026-002",
@@ -55,12 +50,8 @@ const products = [
     ],
     colors: ["black", "white"],
     sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-    trending: false,
-    premium: true,
-    exclusive: false,
-    limited: false,
-    sale: false,
-    offer: true
+    badge: "offer",
+    discount: 20
   },
   {
     id: "WED-2026-005",
@@ -84,12 +75,8 @@ const products = [
     ],
     colors: ["black","blue", "brown","red"],
     sizes: [7, 8, 9, 10, 11],
-    trending: false,
-    premium: false,
-    exclusive: true,
-    limited: false,
-    sale: false,
-    offer: false
+    badge: "sale",
+    discount: 18
   },
   {
     id: "vnw-2026-001",
@@ -112,12 +99,7 @@ const products = [
     ],
     colors: ["white", "blue", "yellow", "red", "pink"],
     sizes: [6, 7, 8, 9, 10],
-    trending: false,
-    premium: false,
-    exclusive: false,
-    limited: true,
-    sale: false,
-    offer: true
+    badge: "limited"
   },
   {
     id: "lct-2025-008",
@@ -137,12 +119,7 @@ const products = [
     ],
     colors: ["black"],
     sizes: [9, 10, 11, 12, 13,14],
-    trending: true,
-    premium: true,
-    exclusive: false,
-    limited: false,
-    sale: false,
-    offer: false
+    badge: "premium"
   },
   {
     id: "ytu-2025-009",
@@ -164,12 +141,8 @@ const products = [
     ],
     colors: ["amber", "white", "black","rose"],
     sizes: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
-    trending: false,
-    premium: false,
-    exclusive: false,
-    limited: false,
-    sale: true,
-    offer: false
+    badge: "sale",
+    discount: 15
   },
   {
     id: "vnw-2026-015",
@@ -192,12 +165,7 @@ const products = [
     ],
     colors: ["blue", "red", "brown","black"],
     sizes: [6, 7, 8, 9, 10],
-    trending: true,
-    premium: false,
-    exclusive: false,
-    limited: true,
-    sale: false,
-    offer: false
+    badge: "trending"
   },
   {
     id: "AdST-2025-016",
@@ -219,12 +187,7 @@ const products = [
     ],
     colors: ["white", "black","pink","green"],
     sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14],
-    trending: false,
-    premium: true,
-    exclusive: false,
-    limited: false,
-    sale: false,
-    offer: false
+    badge: "exclusive"
   },
 
   {
@@ -247,12 +210,7 @@ const products = [
     ],
     colors: ["black", "blue", "green"],
     sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14],
-    trending: false,
-    premium: true,
-    exclusive: true,
-    limited: false,
-    sale: false,
-    offer: false
+    badge: "premium"
   },
   {
     id: "NKWBW-2025-025",
@@ -274,12 +232,8 @@ const products = [
     ],
     colors: ["black"],
     sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14],
-    trending: true,
-    premium: false,
-    exclusive: false,
-    limited: false,
-    sale: true,
-    offer: false
+    badge: "sale",
+    discount: 22
   },
   {
     id: "ADAS-2026-025",
@@ -300,7 +254,9 @@ const products = [
       "https://i.imgur.com/9Hoq8DM.jpeg"
     ],
     colors: ["green","red", "blue"],
-    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14],
+    badge: "offer",
+    discount: 12
   },
   {
     id: "air95-2026-01",
@@ -319,7 +275,8 @@ const products = [
       "https://i.imgur.com/XlJLecR.jpeg"
     ],
     colors: ["white", "blue"],
-    sizes: [9, 10, 11, 12, 13, 14]
+    sizes: [9, 10, 11, 12, 13, 14],
+    badge: "trending"
   },
   {
   id: "nb990-2025-01",
@@ -338,7 +295,8 @@ const products = [
     "https://i.imgur.com/JYcGVQa.jpeg"
   ],
   colors: ["black", "pink"],
-  sizes: [9, 10, 11, 12, 13, 14]
+  sizes: [9, 10, 11, 12, 13, 14],
+  badge: "exclusive"
 },
   {
     id: "ADAS-2026-026",
@@ -359,7 +317,9 @@ const products = [
       "https://i.imgur.com/INbyois.jpeg"
     ],
     colors: ["green","black", "brown"],
-    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14]
+    sizes: [6, 7, 8, 9, 10, 11, 12, 13, 14],
+    badge: "sale",
+    discount: 20
   },
   
 {
@@ -378,7 +338,8 @@ const products = [
     "https://i.imgur.com/wy3L9RL.jpeg"
   ],
   colors: ["black"],
-  sizes: [6, 7, 8, 9, 10, 11]
+  sizes: [6, 7, 8, 9, 10, 11],
+  badge: "exclusive"
 },
 
 {
@@ -397,7 +358,8 @@ const products = [
     "https://i.imgur.com/FviyuFO.jpeg"
   ],
   colors: ["khaki"],
-  sizes: [6, 7, 8, 9, 10, 11]
+  sizes: [6, 7, 8, 9, 10, 11],
+  badge: "limited"
 },
   {
   id: "af1-custom-brown-001",
@@ -415,7 +377,9 @@ const products = [
       "https://i.imgur.com/S9s9m1I.jpeg",
     ],
     colors: ["brown"],
-    sizes: [6, 7, 8, 9, 10, 11]
+    sizes: [6, 7, 8, 9, 10, 11],
+    badge: "offer",
+    discount: 10
   },
   {
     id: "af1-custom-004",
@@ -432,7 +396,8 @@ const products = [
       "https://i.imgur.com/F7zvfiC.jpeg"
     ],
     colors: ["yellow"],
-    sizes: [6,7,8, 9, 10, 11]
+    sizes: [6,7,8, 9, 10, 11],
+    badge: "limited"
   },
 {
   id: "af1-custom-006",
@@ -450,7 +415,9 @@ const products = [
     "https://i.imgur.com/xDFQhZz.jpeg"
   ],
   colors: ["white"],
-  sizes: [6,7, 8, 9, 10, 11]
+  sizes: [6,7, 8, 9, 10, 11],
+  badge: "sale",
+  discount: 18
 },
 {
   id: "af1-custom-007",
@@ -468,7 +435,8 @@ const products = [
     "https://i.imgur.com/SeqVOdx.jpeg"
   ],
   colors: ["white"],
-  sizes: [6, 7, 8, 9, 10, 11]
+  sizes: [6, 7, 8, 9, 10, 11],
+  badge: "exclusive"
 },
 {
   id: "af1-custom-008",
@@ -486,7 +454,8 @@ const products = [
     "https://i.imgur.com/yq7OrdA.jpeg"
   ],
   colors: ["white"],
-  sizes: [6, 7, 8, 9, 10, 11]
+  sizes: [6, 7, 8, 9, 10, 11],
+  badge: "premium"
 },
 {
   id: "af1-custom-009",
@@ -504,7 +473,8 @@ const products = [
     "https://i.imgur.com/SkjgU10.jpeg"
   ],
   colors: ["white"],
-  sizes: [6, 7, 8, 9, 10, 11]
+  sizes: [6, 7, 8, 9, 10, 11],
+  badge: "premium"
 },
   {
     id: "vnw-2025-008",
@@ -525,7 +495,9 @@ const products = [
 
     ],
     colors: ["grey","brown" ,"black"],
-    sizes: [6, 7, 8, 9, 10]
+    sizes: [6, 7, 8, 9, 10],
+    badge: "offer",
+    discount: 8
   },
 
   {
@@ -547,7 +519,8 @@ const products = [
 
     ],
     colors: ["grey","brown" ,"red"],
-    sizes: [6, 7, 8, 9, 10]
+    sizes: [6, 7, 8, 9, 10],
+    badge: "trending"
   },
 
 
@@ -570,7 +543,8 @@ const products = [
 
     ],
     colors: ["red","grey" ,"black"],
-    sizes: [6, 7, 8, 9, 10]
+    sizes: [6, 7, 8, 9, 10],
+    badge: "exclusive"
   },
  {
     id: "vnw-2026-011",
@@ -593,7 +567,9 @@ const products = [
 
     ],
     colors: ["white","grey" ,"yellow", "red", "black"],
-    sizes: [6, 7, 8, 9, 10]
+    sizes: [6, 7, 8, 9, 10],
+    badge: "sale",
+    discount: 25
   }
 ];
 
