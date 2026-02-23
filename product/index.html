@@ -28,45 +28,171 @@
     .loader-spin {
       animation: spin-loader 1.2s linear infinite;
     }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      z-index: 20;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .badge-trending {
+      background: linear-gradient(135deg, #ec4899, #f43f5e);
+    }
+
+    .badge-premium {
+      background: linear-gradient(135deg, #d946ef, #ec4899);
+    }
+
+    .badge-sale {
+      background: linear-gradient(135deg, #f43f5e, #991b1b);
+    }
+
+    .badge-exclusive {
+      background: linear-gradient(135deg, #f43f5e, #dc2626);
+    }
+
+    .badge-limited {
+      background: linear-gradient(135deg, #ec4899, #be185d);
+    }
+
+    .badge-offer {
+      background: linear-gradient(135deg, #ec4899, #d946ef);
+    }
+
+    .color-selector {
+      transition: all 0.3s ease;
+    }
+
+    .color-selector:hover {
+      transform: scale(1.15);
+    }
+
+    .size-btn {
+      transition: all 0.3s ease;
+      border: 2px solid #e5e7eb;
+    }
+
+    .size-btn:hover {
+      border-color: #ec4899;
+      transform: translateY(-2px);
+    }
+
+    .size-btn.selected {
+      background: linear-gradient(135deg, #ec4899, #f43f5e);
+      color: white;
+      border-color: #ec4899;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ec4899, #f43f5e);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(236, 72, 153, 0.4);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(6, 182, 212, 0.4);
+    }
+
+    .product-detail-card {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.05), rgba(244, 63, 94, 0.05));
+      border: 1px solid rgba(236, 72, 153, 0.1);
+    }
+
+    .swiper-button-prev, .swiper-button-next {
+      background: rgba(0, 0, 0, 0.6) !important;
+      border-radius: 50% !important;
+      width: 48px !important;
+      height: 48px !important;
+      transition: all 0.3s ease;
+    }
+
+    .swiper-button-prev:hover, .swiper-button-next:hover {
+      background: rgba(236, 72, 153, 0.8) !important;
+      transform: scale(1.1);
+    }
+
+    .original-price {
+      text-decoration: line-through;
+      color: #9ca3af;
+      font-size: 0.85em;
+    }
+
+    .discount-badge {
+      background: linear-gradient(135deg, #f43f5e, #dc2626);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+    }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-white text-gray-800">
 <!-- Header -->
-<header class="flex justify-between items-center px-6 md:px-10 py-4 bg-transparent shadow-md sticky top-0 z-50">
+<header class="flex justify-between items-center px-4 sm:px-6 lg:px-10 py-4 bg-white border-b border-gray-100 shadow-sm sticky top-0 z-50">
   <!-- Logo -->
-  <a href="https://lukumisteress.iyonicorp.com" class="flex items-center space-x-3">
-    <img src="https://i.imgur.com/NvQLami.png" alt="luku misteress Logo" class="w-14 h-14 md:w-20 md:h-20 object-contain" />
+  <a href="https://lukumisteress.iyonicorp.com" class="flex items-center space-x-2 sm:space-x-3 hover:opacity-80 transition">
+    <img src="https://i.imgur.com/NvQLami.png" alt="luku misteress Logo" class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain" />
+    <span class="hidden sm:block text-lg sm:text-xl font-black bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent">lukumisteress</span>
   </a>
 
   <!-- Navigation -->
-  <nav class="flex items-center space-x-6 text-base">
-    <a href="https://lukumisteress.iyonicorp.com" class="text-gray-700 hover:text-pink-600 transition font-medium">Home</a>
+  <nav class="flex items-center space-x-4 sm:space-x-8 text-base">
+    <a href="https://lukumisteress.iyonicorp.com" class="text-gray-600 hover:text-pink-600 transition font-semibold text-sm sm:text-base">Home</a>
 
     <!-- Cart Icon -->
-    <button id="cart-icon" class="relative text-xl hover:scale-110 transition">
+    <button id="cart-icon" class="relative text-2xl hover:scale-110 transition duration-300">
       🛒
-      <span id="cart-count" class="absolute -top-2 -right-3 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+      <span id="cart-count" class="absolute -top-3 -right-3 bg-gradient-to-r from-pink-600 to-rose-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold">0</span>
     </button>
   </nav>
 
   <!-- Cart Dropdown -->
-  <div id="cart-dropdown" class="absolute right-6 top-20 w-80 bg-white border rounded shadow-md hidden z-50">
-    <div class="flex justify-between items-center p-4 border-b">
-      <h3 class="text-lg font-semibold">Cart Items</h3>
-      <button onclick="closeCartDropdown()" class="text-gray-500 hover:text-red-600 text-xl font-bold">×</button>
+  <div id="cart-dropdown" class="absolute right-6 top-20 w-80 bg-white border border-gray-200 rounded-2xl shadow-2xl hidden z-50">
+    <div class="flex justify-between items-center p-5 border-b border-gray-200 bg-gradient-to-r from-pink-50 to-rose-50">
+      <h3 class="text-lg font-bold text-gray-900">Cart Items</h3>
+      <button onclick="closeCartDropdown()" class="text-gray-400 hover:text-red-600 text-2xl font-bold transition">×</button>
     </div>
-    <div class="p-4">
-      <div id="cart-items" class="space-y-3 max-h-52 overflow-y-auto"></div>
-      <button onclick="proceedToCheckout()" class="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">Checkout</button>
+    <div class="p-5">
+      <div id="cart-items" class="space-y-3 max-h-56 overflow-y-auto"></div>
+      <button onclick="proceedToCheckout()" class="mt-5 w-full bg-gradient-to-r from-pink-600 to-rose-500 text-white py-3 rounded-xl font-bold hover:shadow-lg transition">Proceed to Checkout</button>
     </div>
   </div>
 </header>
-<div id="signupPrompt" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-  <div class="bg-white p-6 rounded-lg shadow-lg w-[350px] text-center">
-    <h3 class="text-xl font-semibold mb-4">Please Sign Up or Log In</h3>
-    <p class="mb-4 text-gray-600">You need to be logged in to add products or place orders.</p>
-    <a href="../signup" class="inline-block bg-pink-600 text-white px-6 py-2 rounded hover:bg-pink-700 transition">Go to Sign Up</a>
-    <button onclick="document.getElementById('signupPrompt').classList.add('hidden')" class="block text-sm text-gray-500 mt-4 hover:underline">Cancel</button>
+<div id="signupPrompt" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center animate-fade-in-up">
+    <h3 class="text-2xl font-black mb-3 text-gray-900">Sign In Required</h3>
+    <p class="mb-6 text-gray-600 text-base">You need to be logged in to add products or place orders.</p>
+    <a href="../signup" class="inline-block bg-gradient-to-r from-pink-600 to-rose-500 text-white px-8 py-3 rounded-xl font-bold hover:shadow-lg transition">Create Account</a>
+    <button onclick="document.getElementById('signupPrompt').classList.add('hidden')" class="block w-full text-sm text-gray-500 mt-4 font-semibold hover:text-gray-700 transition">Cancel</button>
   </div>
 </div>
 
@@ -78,7 +204,7 @@ function showSignupPrompt() {
 
 
 <!-- Product Section -->
-<section id="product-section" class="max-w-6xl mx-auto py-16 px-8">
+<section id="product-section" class="min-h-screen py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
   <!-- Preloader -->
   <div class="flex justify-center items-center py-20">
     <div class="text-center">
@@ -91,24 +217,25 @@ function showSignupPrompt() {
 </section>
 
 <!-- Size Chart Modal -->
-<div id="sizeChartModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-  <div class="bg-white p-6 rounded-lg shadow-lg w-[400px]">
-    <h3 class="text-xl font-bold mb-4">Size Chart</h3>
+<div id="sizeChartModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+  <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md animate-fade-in-up">
+    <h3 class="text-2xl font-black mb-6 text-gray-900">International Size Chart</h3>
 
     <div class="overflow-x-auto">
-      <table class="w-full text-sm text-left border border-gray-200">
+      <table class="w-full text-sm text-left">
         <thead>
-          <tr class="bg-gray-100">
-            <th class="px-3 py-2 border">US</th>
-            <th class="px-3 py-2 border">UK</th>
-            <th class="px-3 py-2 border">EU</th>
-            <th class="px-3 py-2 border">AUS</th>
+          <tr class="bg-gradient-to-r from-pink-100 to-rose-100 border-b-2 border-pink-200">
+            <th class="px-4 py-3 font-bold text-gray-900">US</th>
+            <th class="px-4 py-3 font-bold text-gray-900">UK</th>
+            <th class="px-4 py-3 font-bold text-gray-900">EU</th>
+            <th class="px-4 py-3 font-bold text-gray-900">AUS</th>
           </tr>
         </thead>
-        <tbody id="sizeChartBody" class="cursor-pointer"></tbody>
+        <tbody id="sizeChartBody" class="cursor-pointer">
+        </tbody>
       </table>
     </div>
-    <button onclick="closeSizeChart()" class="bg-gray-700 text-white px-4 py-2 mt-4 w-full rounded">Close</button>
+    <button onclick="closeSizeChart()" class="bg-gradient-to-r from-pink-600 to-rose-500 text-white font-bold px-6 py-3 mt-6 w-full rounded-xl hover:shadow-lg transition">Close</button>
   </div>
 </div>
 
@@ -176,9 +303,9 @@ const fullSizeChart = [
 function renderSizeChart() {
   const body = document.getElementById("sizeChartBody");
   body.innerHTML = "";
-  fullSizeChart.forEach(row => {
+  fullSizeChart.forEach((row, idx) => {
     const tr = document.createElement("tr");
-    tr.className = "hover:bg-pink-100 transition";
+    tr.className = `hover:bg-pink-50 transition border-b border-gray-200 ${idx % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`;
     tr.onclick = () => {
       const selected = row[sizeChartType];
       selectedSize = selected;
@@ -186,10 +313,10 @@ function renderSizeChart() {
       updateSizeButtons(selected);
     };
     tr.innerHTML = `
-      <td class="px-3 py-2 border">${row.us}</td>
-      <td class="px-3 py-2 border">${row.uk}</td>
-      <td class="px-3 py-2 border">${row.eu}</td>
-      <td class="px-3 py-2 border">${row.aus}</td>
+      <td class="px-4 py-3 font-semibold text-gray-900">${row.us}</td>
+      <td class="px-4 py-3 font-semibold text-gray-900">${row.uk}</td>
+      <td class="px-4 py-3 font-semibold text-gray-900">${row.eu}</td>
+      <td class="px-4 py-3 font-semibold text-gray-900">${row.aus}</td>
     `;
     body.appendChild(tr);
   });
@@ -212,23 +339,23 @@ function switchSizeChart(type) {
   renderSizeChart();
 }
 function updateSizeButtons(selected) {
-  document.querySelectorAll(".size-option").forEach(btn => {
+  document.querySelectorAll(".size-btn").forEach(btn => {
     if (btn.textContent === selected.toString()) {
-      btn.classList.add("bg-pink-100", "border-pink-500");
+      btn.classList.add("selected");
     } else {
-      btn.classList.remove("bg-pink-100", "border-pink-500");
+      btn.classList.remove("selected");
     }
   });
 }
 function selectColor(color, el) {
   selectedColor = color;
-  document.querySelectorAll(".w-8.h-8").forEach(dot => dot.classList.remove("ring-2", "ring-pink-500"));
-  el.classList.add("ring-2", "ring-pink-500");
+  document.querySelectorAll(".color-selector").forEach(dot => dot.classList.remove("ring-4", "ring-pink-500"));
+  el.classList.add("ring-4", "ring-pink-500");
 }
 function selectSize(size, el) {
   selectedSize = size;
-  document.querySelectorAll(".size-option").forEach(btn => btn.classList.remove("bg-pink-100", "border-pink-500"));
-  el.classList.add("bg-pink-100", "border-pink-500");
+  document.querySelectorAll(".size-btn").forEach(btn => btn.classList.remove("selected"));
+  el.classList.add("selected");
 }
 function copyShareLink() {
   const shareURL = window.location.href;
@@ -369,102 +496,174 @@ function renderProduct() {
   selectedColor = product.colors[0];
   const productDetailsHTML = product.details.map(detail => `<li>${detail}</li>`).join("");
 
-  document.getElementById("product-section").innerHTML = `
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-      <div>
-        <div class="swiper mySwiper2 mb-4 bg-transparent relative">
-          <div class="swiper-wrapper">
-            ${product.images.map(img => `
-              <div class="swiper-slide">
-                <img src="${img}" class="w-full object-contain" />
-              </div>
-            `).join("")}
-          </div>
+  let badgeHtml = '';
+  let priceHtml = '';
+  const discount = product.discount || 15;
 
-          <!-- Navigation Arrows -->
-          <div class="swiper-button-prev absolute left-0 top-1/2 transform -translate-y-1/2 z-10 text-3xl text-white bg-black bg-opacity-50 rounded-full px-3 py-1 cursor-pointer hover:bg-opacity-70 select-none">&#10094;</div>
-          <div class="swiper-button-next absolute right-0 top-1/2 transform -translate-y-1/2 z-10 text-3xl text-white bg-black bg-opacity-50 rounded-full px-3 py-1 cursor-pointer hover:bg-opacity-70 select-none">&#10095;</div>
+  if (product.badge) {
+    const badgeConfig = {
+      trending: { class: 'badge-trending', text: '🔥 Trending' },
+      premium: { class: 'badge-premium', text: '⭐ Premium' },
+      exclusive: { class: 'badge-exclusive', text: '✨ Exclusive' },
+      limited: { class: 'badge-limited', text: '⏰ Limited' },
+      sale: { class: 'badge-sale', text: '🏷️ Sale' },
+      offer: { class: 'badge-offer', text: '🎁 Offer' }
+    };
+
+    const config = badgeConfig[product.badge];
+    if (config) {
+      badgeHtml = `<div class="badge ${config.class}">${config.text}</div>`;
+    }
+  }
+
+  if (product.badge === 'sale' || product.badge === 'offer') {
+    const discountAmount = Math.round((product.price * discount) / 100);
+    const discountedPrice = product.price - discountAmount;
+    priceHtml = `
+      <div class="space-y-2">
+        <div class="flex items-center gap-3">
+          <span class="original-price">Ksh${product.price}</span>
+          <span class="discount-badge">-${discount}%</span>
+        </div>
+        <p class="text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent">Ksh${discountedPrice}</p>
+      </div>
+    `;
+  } else {
+    priceHtml = `<p class="text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-500 bg-clip-text text-transparent">Ksh${product.price}</p>`;
+  }
+
+  document.getElementById("product-section").innerHTML = `
+    <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 animate-fade-in-up">
+      <!-- Product Gallery -->
+      <div class="space-y-4">
+        <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50 shadow-xl">
+          <div class="swiper mySwiper2 relative">
+            <div class="swiper-wrapper">
+              ${product.images.map(img => `
+                <div class="swiper-slide">
+                  <img src="${img}" class="w-full h-full object-contain py-8" />
+                </div>
+              `).join("")}
+            </div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+          </div>
+          ${badgeHtml}
         </div>
 
-        <div class="swiper mySwiperThumbs mt-2">
-          <div class="swiper-wrapper">
+        <!-- Thumbnail Gallery -->
+        <div class="swiper mySwiperThumbs">
+          <div class="swiper-wrapper gap-2">
             ${product.images.map(img => `
-              <div class="swiper-slide !w-auto">
-                <img src="${img}" class="h-20 w-28 object-contain rounded cursor-pointer" />
+              <div class="swiper-slide !w-auto rounded-lg overflow-hidden border-2 border-transparent hover:border-pink-400 cursor-pointer transition">
+                <img src="${img}" class="h-24 w-28 object-contain bg-gray-50 rounded-lg" />
               </div>
             `).join("")}
           </div>
         </div>
       </div>
 
-      <div class="space-y-6">
-        <h2 class="text-4xl font-bold">${product.name}</h2>
-        <p class="text-sm text-gray-400">Product ID: <span class="font-mono text-gray-700">${product.id}</span></p>
-        <p class="text-gray-600">${product.description}</p>
-        <p class="text-2xl font-semibold text-pink-600">Ksh${product.price}</p>
-
-        <div>
-          ${product.colors.length === 1 ?
-            `<label class="font-semibold block mb-1">Color: Default Colour</label>` :
-            `<label class="font-semibold block mb-1">Color</label>
-             <div class="flex gap-4">
-               ${product.colors.map((color, i) => {
-                 const isSelected = i === 0 ? 'ring-2 ring-pink-500' : '';
-                 const colorClass = colorClasses[color] || 'bg-gray-400';
-                 return `<span onclick="selectColor('${color}', this)" class="w-8 h-8 rounded-full ${colorClass} border-2 border-gray-300 cursor-pointer ${isSelected}"></span>`;
-               }).join("")}
-             </div>`
-          }
+      <!-- Product Info -->
+      <div class="space-y-8">
+        <div class="space-y-3">
+          <div class="flex items-start justify-between">
+            <div>
+              <h1 class="text-4xl lg:text-5xl font-black text-gray-900 leading-tight">${product.name}</h1>
+              <p class="text-xs text-gray-500 mt-2 font-mono uppercase tracking-wider">SKU: ${product.id}</p>
+            </div>
+          </div>
+          <p class="text-gray-600 text-lg leading-relaxed">${product.description}</p>
         </div>
 
-        <div>
-          <label class="font-semibold block mb-1 mt-4">Size 
-            <button onclick="openSizeChart()" class="text-sm text-pink-600 underline ml-2">View Chart</button>
-          </label>
-          <div class="grid grid-cols-4 gap-2">
+        <!-- Price Section -->
+        <div class="product-detail-card p-6 rounded-xl">
+          ${priceHtml}
+        </div>
+
+        <!-- Color Selection -->
+        ${product.colors.length === 1 ?
+          `<div class="space-y-3">
+            <label class="text-sm font-bold uppercase tracking-wider text-gray-700">Color: Default Colour</label>
+          </div>` :
+          `<div class="space-y-4">
+            <label class="text-sm font-bold uppercase tracking-wider text-gray-700">Select Color</label>
+            <div class="flex gap-4 flex-wrap">
+              ${product.colors.map((color, i) => {
+                const isSelected = i === 0 ? 'ring-4 ring-pink-500' : '';
+                const colorClass = colorClasses[color] || 'bg-gray-400';
+                return `<button onclick="selectColor('${color}', this)" class="color-selector w-12 h-12 rounded-full ${colorClass} border-2 border-gray-300 ${isSelected} hover:shadow-lg" title="${color}"></button>`;
+              }).join("")}
+            </div>
+          </div>`
+        }
+
+        <!-- Size Selection -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <label class="text-sm font-bold uppercase tracking-wider text-gray-700">Select Size</label>
+            <button onclick="openSizeChart()" class="text-xs font-bold text-pink-600 hover:text-pink-700 uppercase">📏 Size Chart</button>
+          </div>
+          <div class="grid grid-cols-5 gap-2">
             ${product.sizes.map((size, i) => {
-              const isSelected = i === 0 ? 'bg-pink-100 border-pink-500' : '';
-              return `<button onclick="selectSize(${size}, this)" class="size-option py-2 border rounded ${isSelected}">${size}</button>`;
+              const isSelected = i === 0 ? 'selected' : '';
+              return `<button onclick="selectSize(${size}, this)" class="size-btn py-3 rounded-lg font-bold text-sm ${isSelected}">${size}</button>`;
             }).join("")}
           </div>
         </div>
 
-        <div class="space-x-4 pt-4">
-          <button onclick="addToCart()" class="bg-pink-600 text-white px-6 py-2 rounded hover:bg-pink-500 transition">Add to Cart</button>
-          <button onclick="buynow()" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-500 transition">Buy now</button>
+        <!-- Action Buttons -->
+        <div class="space-y-3 pt-4">
+          <button onclick="buynow()" class="btn-primary w-full py-4 rounded-xl text-white font-bold uppercase text-lg tracking-wider">Buy Now</button>
+          <button onclick="addToCart()" class="btn-secondary w-full py-4 rounded-xl text-white font-bold uppercase text-lg tracking-wider">Add to Cart</button>
         </div>
 
-        <div class="mt-4">
-          <button onclick="copyShareLink()" class="text-sm text-pink-600 hover:underline">
-            🔗 Copy Share Link
+        <!-- Share -->
+        <div class="flex items-center justify-center gap-3 pt-4 border-t border-gray-200">
+          <button onclick="copyShareLink()" class="flex items-center gap-2 text-sm font-semibold text-pink-600 hover:text-pink-700 transition">
+            🔗 Share Product
           </button>
-          <span id="copyToast" class="ml-3 text-green-600 text-sm hidden">Link copied!</span>
+          <span id="copyToast" class="text-xs text-green-600 font-semibold hidden">✓ Copied!</span>
         </div>
       </div>
     </div>
 
-    <section class="mt-12 max-w-4xl mx-auto">
-      <h3 class="text-2xl font-bold mb-4">Product Details</h3>
-      <ul class="list-disc list-inside space-y-2 text-gray-600">${productDetailsHTML}</ul>
-    </section>
-
-    <section class="mt-16 bg-transparent px-8 py-10 rounded shadow-md">
-      <h3 class="text-2xl font-bold mb-6">Related Products</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        ${products.filter(p => p.id !== product.id && p.category === product.category).slice(0, 3).map(p => `
-          <div class="rounded-lg overflow-hidden shadow hover:shadow-md transition bg-transparent">
-            <a href="../product?id=${p.id}">
-              <img src="${p.images[0]}" alt="${p.name}" class="w-full h-52 object-contain"/>
-            </a>
-            <div class="p-4">
-              <h4 class="font-semibold">${p.name}</h4>
-              <p class="text-gray-600">ksh${p.price}</p>
-              <a href="../product?id=${p.id}" class="text-pink-600 text-sm hover:underline">View Product</a>
-            </div>
-          </div>
-        `).join('')}
+    <!-- Product Details Section -->
+    <section class="mt-24 animate-fade-in-up">
+      <div class="bg-white rounded-3xl p-8 lg:p-12 shadow-lg border border-gray-100">
+        <h2 class="text-3xl lg:text-4xl font-black mb-8 text-gray-900">Product Details</h2>
+        <ul class="space-y-4">
+          ${product.details.map(detail => `
+            <li class="flex items-start gap-4 text-gray-700 group hover:bg-pink-50 p-3 rounded-lg transition">
+              <span class="text-pink-600 text-2xl font-bold flex-shrink-0 mt-0">✓</span>
+              <span class="text-base lg:text-lg leading-relaxed">${detail}</span>
+            </li>
+          `).join("")}
+        </ul>
       </div>
     </section>
+
+    <!-- Related Products Section -->
+    <section class="mt-24 animate-fade-in-up">
+      <div class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-3xl p-8 lg:p-12 border border-pink-100">
+        <h2 class="text-3xl lg:text-4xl font-black mb-10 text-gray-900">More Products You'll Love</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        ${products.filter(p => p.id !== product.id && p.category === product.category).slice(0, 3).map(p => `
+          <a href="../product?id=${p.id}" class="group rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 bg-white border border-gray-100">
+            <div class="relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden h-64">
+              <img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-contain group-hover:scale-110 transition duration-300"/>
+            </div>
+            <div class="p-5 space-y-3">
+              <h4 class="font-bold text-lg text-gray-900 group-hover:text-pink-600 transition">${p.name}</h4>
+              <p class="text-xl font-bold text-pink-600">ksh${p.price}</p>
+              <button class="w-full py-2 rounded-lg bg-gradient-to-r from-pink-600 to-rose-500 text-white font-semibold hover:shadow-lg transition">View →</button>
+            </div>
+          </a>
+        `).join('')}
+        </div>
+      </div>
+    </section>
+    </div>
   `;
   initializeSwiper();
 }
@@ -582,7 +781,7 @@ updateCartUI();
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
         <div class="text-center md:text-left">
-          <p class="text-gray-400 text-xs sm:text-sm">&copy; 2025 lukumisteress. All rights reserved.</p>
+          <p class="text-gray-400 text-xs sm:text-sm">&copy; 2026 lukumisteress. All rights reserved.</p>
         </div>
         <div class="text-center">
           <p class="text-gray-400 text-xs sm:text-sm font-medium">Crafted with care in Nairobi, Kenya</p>
